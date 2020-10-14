@@ -1,0 +1,12 @@
+/**
+* landing page styles
+*/
+
+#root {
+    text-align: center;
+}
+
+body {
+    background-color: #8600ff;
+    margin: 0;
+}
