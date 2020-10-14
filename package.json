@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/rileyinman/comp426-final/issues"
   },
-  "homepage": "https://github.com/rileyinman/comp426-final#readme"
+  "homepage": "https://github.com/rileyinman/comp426-final#readme",
+  "dependencies": {
+    "browser-sync": "^2.26.12"
+  }
 }
