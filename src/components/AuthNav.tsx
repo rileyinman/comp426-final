@@ -1,3 +1,5 @@
+import React from 'react';
+
 import Navbar from 'react-bulma-components/lib/components/navbar';
 
 import LoginOutButton from './LoginOutButton';
