@@ -6,13 +6,21 @@ import Tile from 'react-bulma-components/lib/components/tile';
 
 import { Board } from '../components';
 
+// TODO: Remove after testing
+import Cell from '../components/Cell';
+import { Item, Obstacle } from '../constants';
+
 class Game extends React.Component {
   render() {
+    let cells = [
+      Obstacle.WALL,
+      Item.KEY
+    ]
     return (
       <Section>
       <Tile kind='ancestor'>
         <Tile size={8}>
-          <Board/>
+          <Board cells={cells}/>
         </Tile>
         <Tile>
           <Button>Restart Level</Button>

@@ -2,14 +2,32 @@ import React from 'react';
 
 import Cell from './Cell';
 
-interface BoardProps {}
+import { Item, Obstacle } from '../constants';
+
+interface BoardProps {
+  cells: (Item|Obstacle)[]
+}
+
 interface BoardState {
-  cells: Cell[];
+  cells: (Item|Obstacle)[]
 }
 
 class Board extends React.Component<BoardProps, BoardState> {
+  constructor(props: BoardProps) {
+    super(props);
+    this.state = {
+      cells: props.cells
+    };
+  }
+
   render() {
-    return <div>Board</div>
+    let renderedCells = this.state.cells.map((cell, index) => (
+      <div key={index}>
+        <Cell contains={cell}/>
+      </div>
+    ));
+
+    return renderedCells;
   }
 }
 
