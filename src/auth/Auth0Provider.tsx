@@ -1,6 +1,6 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { AppState, Auth0Provider, Auth0ProviderOptions } from '@auth0/auth0-react';
+import { AppState, Auth0Provider } from '@auth0/auth0-react';
 
 // TODO: Remove this any??
 const Auth0ProviderWithHistory = ({ children }: any) => {
@@ -13,7 +13,7 @@ const Auth0ProviderWithHistory = ({ children }: any) => {
     history.push(appState?.returnTo || window.location.pathname);
   };
 
-  if (domain == undefined || clientId == undefined) {
+  if (domain === undefined || clientId === undefined) {
     // TODO: Why doesn't this show up in the console? Who knows!
     throw new Error("domain and clientId must be defined in env");
   }

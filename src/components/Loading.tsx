@@ -1,8 +1,9 @@
 import React from 'react';
-import ReactLoading from 'react-loading';
+import Loader from 'react-bulma-components/lib/components/loader';
 
+// TODO: Center this on page
 const Loading = () => {
-  return <ReactLoading type='spinningBubbles' color='black' height={128} width={128}/>;
+  return <Loader style={{ width: 128, height: 128 }}/>
 }
 
 export default Loading;

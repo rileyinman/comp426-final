@@ -1,5 +1,5 @@
-import HomeHero from './HomeHero';
+import Board from './Board';
 import Loading from './Loading';
 import NavBar from './NavBar';
 
-export { HomeHero, Loading, NavBar };
+export { Board, Loading, NavBar };
