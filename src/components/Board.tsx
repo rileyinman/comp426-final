@@ -1,7 +1,5 @@
 import React from 'react';
-
 import Cell from './Cell';
-
 import { Item, Obstacle, Player } from '../constants';
 
 interface BoardProps {
