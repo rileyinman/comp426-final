@@ -4,6 +4,7 @@ import { withAuthenticationRequired } from '@auth0/auth0-react';
 import { Loading } from '../components';
 
 // TODO: Fix this any
+// TODO: Rewrite this without auth0
 const ProtectedRoute = ({ component, ...args }: any) => (
   <Route
     component={withAuthenticationRequired(component, {
