@@ -1,3 +1,3 @@
-import { Item, Obstacle } from './Cell';
+import { Item, Obstacle, Player } from './Cell';
 
-export { Item, Obstacle };
+export { Item, Obstacle, Player };

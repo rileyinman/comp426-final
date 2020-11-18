@@ -2,14 +2,14 @@ import React from 'react';
 
 import Cell from './Cell';
 
-import { Item, Obstacle } from '../constants';
+import { Item, Obstacle, Player } from '../constants';
 
 interface BoardProps {
-  cells: (Item|Obstacle)[]
+  cells: (Item|Obstacle|Player)[]
 }
 
 interface BoardState {
-  cells: (Item|Obstacle)[]
+  cells: (Item|Obstacle|Player)[]
 }
 
 class Board extends React.Component<BoardProps, BoardState> {

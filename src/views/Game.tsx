@@ -7,14 +7,15 @@ import Tile from 'react-bulma-components/lib/components/tile';
 import { Board } from '../components';
 
 // TODO: Remove after testing
-import Cell from '../components/Cell';
-import { Item, Obstacle } from '../constants';
+import { Item, Obstacle, Player } from '../constants';
 
 class Game extends React.Component {
   render() {
     let cells = [
       Obstacle.WALL,
-      Item.KEY
+      Player.DEFAULT,
+      Item.KEY,
+      Obstacle.WALL
     ]
     return (
       <Section>

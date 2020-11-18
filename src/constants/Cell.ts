@@ -6,4 +6,8 @@ enum Obstacle {
   WALL = "wall"
 }
 
-export { Item, Obstacle };
+enum Player {
+  DEFAULT = "playerDefault"
+}
+
+export { Item, Obstacle, Player };
