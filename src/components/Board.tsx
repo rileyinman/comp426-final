@@ -3,11 +3,11 @@ import Cell from './Cell';
 import { Item, Obstacle, Floor, Player } from '../constants';
 
 interface BoardProps {
-  cells: (Item|Obstacle|Floor|Player)[]
+  cells: (Item|Obstacle|Floor|Player)[][]
 }
 
 interface BoardState {
-  cells: (Item|Obstacle|Floor|Player)[]
+  cells: (Item|Obstacle|Floor|Player)[][]
 }
 
 class Board extends React.Component<BoardProps, BoardState> {
@@ -19,9 +19,9 @@ class Board extends React.Component<BoardProps, BoardState> {
   }
 
   render() {
-    let renderedCells = this.state.cells.map((cell, index) => (
+    let renderedCells = this.state.cells.map((row, index) => (
       <div key={index}>
-        <Cell contains={cell}/>
+        {row.map(cell => <Cell contains={cell}/>)}
       </div>
     ));
     return renderedCells;
