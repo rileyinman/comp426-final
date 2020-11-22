@@ -1,10 +1,12 @@
 import React from 'react';
 
-import Section from 'react-bulma-components/lib/components/section';
 import Button from 'react-bulma-components/lib/components/button';
+import Section from 'react-bulma-components/lib/components/section';
 import Tile from 'react-bulma-components/lib/components/tile';
 
 import { Board } from '../components';
+
+import './Game.scss';
 
 // TODO: Remove after testing
 import { Item, Obstacle, Floor, Player } from '../constants';
@@ -26,8 +28,10 @@ class Game extends React.Component {
     return (
       <Section>
       <Tile kind='ancestor'>
-        <Tile size={8}>
-          <Board cells={cells}/>
+        <Tile size={7}>
+          <Section className='game-board'>
+            <Board cells={cells}/>
+          </Section>
         </Tile>
         <Tile>
           <Button>Restart Level</Button>
