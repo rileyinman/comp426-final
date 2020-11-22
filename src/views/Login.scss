@@ -1,0 +1,17 @@
+@import '../variables';
+
+.login-header {
+  background-color: $primary;
+  .login-header-text { color: white; }
+}
+
+.login {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: calc(100vh - #{$navbar-height});
+}
+
+.login-form input {
+  width: 95%;
+}
