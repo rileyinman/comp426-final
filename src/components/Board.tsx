@@ -1,13 +1,13 @@
 import React from 'react';
 import Cell from './Cell';
-import { Item, Obstacle, Player } from '../constants';
+import { Item, Obstacle, Floor, Player } from '../constants';
 
 interface BoardProps {
-  cells: (Item|Obstacle|Player)[]
+  cells: (Item|Obstacle|Floor|Player)[]
 }
 
 interface BoardState {
-  cells: (Item|Obstacle|Player)[]
+  cells: (Item|Obstacle|Floor|Player)[]
 }
 
 class Board extends React.Component<BoardProps, BoardState> {
@@ -24,7 +24,6 @@ class Board extends React.Component<BoardProps, BoardState> {
         <Cell contains={cell}/>
       </div>
     ));
-
     return renderedCells;
   }
 }
