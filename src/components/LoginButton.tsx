@@ -1,9 +1,11 @@
 import React from 'react';
 import Button from 'react-bulma-components/lib/components/button';
 
+import { Link } from 'react-router-dom';
+
 const LoginButton = () => {
   return (
-    <Button>Log In</Button>
+    <Link to='/login'>Login</Link>
   );
 }
 

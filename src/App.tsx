@@ -2,7 +2,7 @@ import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 
 /* import { ProtectedRoute } from './auth'; */
-import { Game, Home, Profile } from './views';
+import { Game, Home, Login, Profile } from './views';
 import { Loading, NavBar } from './components';
 
 // import logo from './logo.svg';
@@ -21,6 +21,7 @@ const App = () => {
       <Switch>
         <Route path='/' exact component={Home}/>
         <Route path='/game' component={Game}/>
+        <Route path='/login' component={Login}/>
         {/* <ProtectedRoute path='/profile' component={Profile}/> */}
       </Switch>
     </>
