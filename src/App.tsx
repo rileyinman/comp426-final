@@ -6,7 +6,6 @@ import { Game, Home, Login, Profile } from './views';
 import { Loading, NavBar } from './components';
 
 // import logo from './logo.svg';
-// import './App.scss';
 
 const App = () => {
   /* const { isLoading } = useAuth0(); */
@@ -22,6 +21,7 @@ const App = () => {
         <Route path='/' exact component={Home}/>
         <Route path='/game' component={Game}/>
         <Route path='/login' component={Login}/>
+        <Route path='/profile' component={Profile}/>
         {/* <ProtectedRoute path='/profile' component={Profile}/> */}
       </Switch>
     </>

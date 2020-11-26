@@ -16,24 +16,8 @@ function authHeader() {
 
 function parseResponse(response: Response) {
   return response.text().then(text => {
-    let data;
-    if (text) {
-      data = JSON.parse(text);
-    }
-
-    if (response.ok) { return data; }
-
-    if (response.status === 401) {
-      logout();
-      window.location.reload(true);
-    }
-
-    let error = response.statusText;
-    if (data) {
-      error = data.message;
-    }
-
-    return Promise.reject(error);
+    if (response.ok) { return true; }
+    return Promise.reject(response.statusText);
   });
 }
 
@@ -50,12 +34,12 @@ function login(username: string, password: string) {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ username, password })
   }).then(parseResponse)
-    .then(user => {
-      if (user) {
-        user.authdata = window.btoa(`${username}:${password}`);
-        localStorage.setItem('user', JSON.stringify('user'));
-      }
-      return user;
+    .then(() => {
+      const user = {
+        username: username,
+        authdata: window.btoa(`${username}:${password}`)
+      };
+      localStorage.setItem('user', JSON.stringify(user));
     });
 }
 
