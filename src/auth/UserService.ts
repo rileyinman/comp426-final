@@ -1,6 +1,6 @@
 function authHeader() {
-  let user: any = {};
-  let localUser = localStorage.getItem('user');
+  let user;
+  const localUser = localStorage.getItem('user');
   if (localUser) {
     user = JSON.parse(localUser);
   }
@@ -19,6 +19,14 @@ function parseResponse(response: Response) {
     if (response.ok) { return true; }
     return Promise.reject(response.statusText);
   });
+}
+
+function isAuthenticated() {
+  if (localStorage.getItem('user')) {
+    return true;
+  }
+
+  return false;
 }
 
 function getAll() {
@@ -47,4 +55,4 @@ function logout() {
   localStorage.removeItem('user');
 }
 
-export { getAll, login, logout };
+export { isAuthenticated, getAll, login, logout };

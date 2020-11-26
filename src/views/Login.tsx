@@ -8,7 +8,7 @@ import { Control, Field, Help, Input, Label } from 'react-bulma-components/lib/c
 import Heading from 'react-bulma-components/lib/components/heading';
 import Message from 'react-bulma-components/lib/components/message';
 
-import { login, logout } from '../auth';
+import { login } from '../auth';
 import './Login.scss';
 
 interface LoginProps extends RouteComponentProps {}

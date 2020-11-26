@@ -13,7 +13,7 @@ import { Item, Obstacle, Floor, Player } from '../constants';
 
 class Game extends React.Component {
   render() {
-    let cells = [
+    const cells = [
       [ Obstacle.WALL, Obstacle.WALL,  Obstacle.WALL, Obstacle.WALL, Obstacle.WALL,  Obstacle.DOOR5, Obstacle.WALL, Obstacle.WALL,  Obstacle.WALL,  Obstacle.WALL ],
       [ Obstacle.WALL, Item.KEY2,      Floor.DEFAULT, Floor.DEFAULT, Floor.DEFAULT,  Floor.DEFAULT,  Floor.DEFAULT, Obstacle.WALL,  Item.KEY5,      Obstacle.WALL ],
       [ Obstacle.WALL, Floor.DEFAULT,  Obstacle.WALL, Obstacle.WALL, Obstacle.WALL,  Obstacle.WALL,  Obstacle.WALL, Obstacle.WALL,  Floor.DEFAULT,  Obstacle.WALL ],

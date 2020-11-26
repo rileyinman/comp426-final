@@ -5,8 +5,6 @@ import { Route, Switch } from 'react-router-dom';
 import { Game, Home, Login, Profile } from './views';
 import { Loading, NavBar } from './components';
 
-// import logo from './logo.svg';
-
 const App = () => {
   /* const { isLoading } = useAuth0(); */
 

@@ -19,12 +19,11 @@ class Board extends React.Component<BoardProps, BoardState> {
   }
 
   render() {
-    let renderedCells = this.state.cells.map((row, index) => (
+    return this.state.cells.map((row, index) => (
       <div key={index}>
         {row.map((cell, index) => <Cell key={index} contains={cell}/>)}
       </div>
     ));
-    return renderedCells;
   }
 }
 
