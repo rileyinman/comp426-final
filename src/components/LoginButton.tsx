@@ -1,11 +1,12 @@
 import React from 'react';
+import { Link, useLocation } from 'react-router-dom';
+
 import Button from 'react-bulma-components/lib/components/button';
 
-import { Link } from 'react-router-dom';
-
 const LoginButton = () => {
+  const location = useLocation();
   return (
-    <Link to='/login'>Login</Link>
+    <Link to={{ pathname: '/login', state: { prevPath: location.pathname } }}>Login</Link>
   );
 }
 

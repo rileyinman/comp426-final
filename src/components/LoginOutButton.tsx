@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { isAuthenticated } from '../auth/UserService';
+import { isAuthenticated } from '../services';
 
 import LoginButton from './LoginButton';
 import LogoutButton from './LogoutButton';

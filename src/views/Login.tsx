@@ -8,7 +8,7 @@ import { Control, Field, Help, Input, Label } from 'react-bulma-components/lib/c
 import Heading from 'react-bulma-components/lib/components/heading';
 import Message from 'react-bulma-components/lib/components/message';
 
-import { login } from '../auth';
+import { login } from '../services';
 import './Login.scss';
 
 interface LoginProps extends RouteComponentProps {}
@@ -16,8 +16,7 @@ interface LoginState {
   username: string,
   password: string,
   usernameValid: boolean,
-  error: string,
-  submitted: boolean
+  error: string
 }
 
 class Login extends React.Component<LoginProps, LoginState> {
@@ -27,8 +26,7 @@ class Login extends React.Component<LoginProps, LoginState> {
       username: '',
       password: '',
       usernameValid: true,
-      error: '',
-      submitted: false
+      error: ''
     }
   }
 
@@ -61,12 +59,11 @@ class Login extends React.Component<LoginProps, LoginState> {
     login(this.state.username, this.state.password)
       .then(() => {
         let page = { pathname: '/' };
-        if (this.props.location.pathname) {
-          page = { pathname: this.props.location.pathname };
+        if (this.props.location.state) {
+          page = { pathname: (this.props.location as any).state.prevPath };
         }
         this.props.history.push(page);
-      }, error => this.setState({ error: 'Could not log in, check credentials' }))
-      .then(() => this.setState({ submitted: true }));
+      }, error => this.setState({ error: 'Could not log in, check credentials' }));
   }
 
   render() {
@@ -78,16 +75,6 @@ class Login extends React.Component<LoginProps, LoginState> {
     }
 
     let formStatus = null;
-    if (this.state.submitted) {
-      formStatus = (
-        <Message color='success'>
-          <Message.Body>
-            You are now logged in.
-          </Message.Body>
-        </Message>
-      );
-    }
-
     if (this.state.error !== '') {
       formStatus = (
         <Message color='danger'>

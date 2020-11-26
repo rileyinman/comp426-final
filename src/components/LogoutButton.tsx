@@ -1,11 +1,13 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
+
 import Button from 'react-bulma-components/lib/components/button';
 
-import { Link } from 'react-router-dom';
+import { logout } from '../services';
 
 const LogoutButton = () => {
   return (
-    <Link to='/logout'>Logout</Link>
+    <Link to='#' onClick={logout}>Logout</Link>
   );
 }
 

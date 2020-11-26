@@ -1,3 +1,5 @@
+import { history } from '.';
+
 function authHeader() {
   let user;
   const localUser = localStorage.getItem('user');
@@ -53,6 +55,7 @@ function login(username: string, password: string) {
 
 function logout() {
   localStorage.removeItem('user');
+  history.push('/');
 }
 
 export { isAuthenticated, getAll, login, logout };
