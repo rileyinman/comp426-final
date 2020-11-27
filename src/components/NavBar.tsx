@@ -29,7 +29,7 @@ class NavBar extends React.Component<NavBarProps, NavBarState> {
     return (
       <Navbar color='light' fixed='top' active={this.state.active} onClick={this.toggleActive}>
         <Navbar.Brand>
-          <Navbar.Item>
+          <Navbar.Item renderAs='div'>
             <img src={logo} alt='Placeholder logo' style={{ width: 40 }}/>
           </Navbar.Item>
           <Navbar.Burger/>
