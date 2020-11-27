@@ -1,13 +1,13 @@
 import React from 'react';
 
-import { Item, Obstacle, Floor, Player } from '../constants';
+import { Item } from '../constants';
 
 interface InventoryProps {
-  items: (Item|Obstacle|Floor|Player)[]
+  items: Item[]
 }
 
 interface InventoryState {
-  items: (Item|Obstacle|Floor|Player)[]
+  items: Item[]
 }
 
 class Inventory extends React.Component<InventoryProps, InventoryState> {
