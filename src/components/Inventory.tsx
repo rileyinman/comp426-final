@@ -19,7 +19,7 @@ class Inventory extends React.Component<InventoryProps, InventoryState> {
   }
 
   render() {
-    return <div>this.props.items</div>;
+    return <div>{this.props.items}</div>;
   }
 }
 
