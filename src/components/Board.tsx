@@ -1,6 +1,8 @@
 import React from 'react';
-import Cell from './Cell';
+
 import { Item, Obstacle, Floor, Player } from '../constants';
+import { indexOf2d } from '../helpers';
+import Cell from './Cell';
 
 interface BoardProps {
   cells: (Item|Obstacle|Floor|Player)[][]
@@ -22,6 +24,7 @@ class Board extends React.Component<BoardProps, BoardState> {
     window.addEventListener('keydown', (event) => {
       switch (event.key) {
         case 'ArrowLeft':
+          this.manipulateBoard();
           console.log('Left arrow pressed');
           break;
         case 'ArrowRight':
@@ -35,6 +38,11 @@ class Board extends React.Component<BoardProps, BoardState> {
           break;
       }
     })
+  }
+
+  manipulateBoard = () => {
+    let newCells = this.state.cells.map(innerArray => innerArray.slice());
+    const playerStart = indexOf2d(newCells, 'playerDefault');
   }
 
   render() {
