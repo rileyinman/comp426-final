@@ -24,13 +24,13 @@ class Board extends React.Component<BoardProps, BoardState> {
     window.addEventListener('keydown', (event) => {
       switch (event.key) {
         case 'ArrowLeft':
-          this.manipulateBoard();
           console.log('Left arrow pressed');
           break;
         case 'ArrowRight':
           console.log('Right arrow pressed');
           break;
         case 'ArrowUp':
+          this.manipulateBoard();
           console.log('Up arrow pressed');
           break;
         case 'ArrowDown':
@@ -43,6 +43,11 @@ class Board extends React.Component<BoardProps, BoardState> {
   manipulateBoard = () => {
     let newCells = this.state.cells.map(innerArray => innerArray.slice());
     const playerStart = indexOf2d(newCells, 'playerDefault');
+    if (newCells && playerStart) {
+      newCells[playerStart[0]][playerStart[1]] = Floor.DEFAULT;
+      newCells[playerStart[0]-1][playerStart[1]] = Player.DEFAULT;
+    }
+    this.setState({ cells: newCells });
   }
 
   render() {

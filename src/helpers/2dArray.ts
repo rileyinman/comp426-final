@@ -6,10 +6,10 @@ function indexOf2d(array2d: string[][], toFind: string) {
     if (colIndex > -1) {
       return [rowIndex, colIndex];
     }
-    return -1;
+    return null;
   });
 
-  return result.find(elem => elem !== -1);
+  return result.find(elem => elem !== null);
 }
 
 export { indexOf2d };
