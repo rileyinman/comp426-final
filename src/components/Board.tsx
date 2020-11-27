@@ -3,20 +3,23 @@ import React from 'react';
 import { Item, Obstacle, Floor, Player } from '../constants';
 import { enumContains, indexOf2d } from '../helpers';
 import Cell from './Cell';
+import Inventory from './Inventory';
 
 interface BoardProps {
   cells: (Item|Obstacle|Floor|Player)[][]
 }
 
 interface BoardState {
-  cells: (Item|Obstacle|Floor|Player)[][]
+  cells: (Item|Obstacle|Floor|Player)[][],
+  inventoryItems: Item[]
 }
 
 class Board extends React.Component<BoardProps, BoardState> {
   constructor(props: BoardProps) {
     super(props);
     this.state = {
-      cells: props.cells
+      cells: props.cells,
+      inventoryItems: []
     };
   }
 
@@ -120,9 +123,12 @@ class Board extends React.Component<BoardProps, BoardState> {
 
   render() {
     return this.state.cells.map((row, index) => (
-      <div key={index}>
-        {row.map((cell, index) => <Cell key={index} contains={cell}/>)}
-      </div>
+      <>
+        <div key={index}>
+          {row.map((cell, index) => <Cell key={index} contains={cell}/>)}
+        </div>
+        <Inventory items={this.state.inventoryItems}/>
+      </>
     ));
   }
 }
