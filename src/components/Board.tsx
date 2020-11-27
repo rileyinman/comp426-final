@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Item, Obstacle, Floor, Player } from '../constants';
-import { enumContains, indexOf2d } from '../helpers';
+import { enumContains, indexOf2d, hasKey } from '../helpers';
 import Cell from './Cell';
 import Inventory from './Inventory';
 
@@ -11,7 +11,7 @@ interface BoardProps {
 
 interface BoardState {
   cells: (Item|Obstacle|Floor|Player)[][],
-  inventoryItems: Item[]
+  inventoryItems: (Item|Obstacle|Floor|Player)[]
 }
 
 class Board extends React.Component<BoardProps, BoardState> {
@@ -53,7 +53,9 @@ class Board extends React.Component<BoardProps, BoardState> {
           return false;
         }
         const toLeft = array[row][column-1];
-        if (enumContains(Obstacle, toLeft)) {
+        if (toLeft == "wall") {
+          return false;
+        } else if (enumContains(Obstacle, toLeft) && !hasKey(this.state.inventoryItems, toLeft)) {
           return false;
         }
         break;
@@ -62,7 +64,9 @@ class Board extends React.Component<BoardProps, BoardState> {
           return false;
         }
         const toRight = array[row][column+1];
-        if (enumContains(Obstacle, toRight)) {
+        if (toRight == "wall") {
+          return false;
+        } else if (enumContains(Obstacle, toRight) && !hasKey(this.state.inventoryItems, toRight)) {
           return false;
         }
         break;
@@ -71,7 +75,9 @@ class Board extends React.Component<BoardProps, BoardState> {
           return false;
         }
         const above = array[row-1][column];
-        if (enumContains(Obstacle, above)) {
+        if (above == "wall") {
+          return false;
+        } else if (enumContains(Obstacle, above) && !hasKey(this.state.inventoryItems, above)) {
           return false;
         }
         break;
@@ -80,12 +86,14 @@ class Board extends React.Component<BoardProps, BoardState> {
           return false;
         }
         const below = array[row+1][column];
-        if (enumContains(Obstacle, below)) {
+        if (below == "wall") {
+          return false;
+        } else if (enumContains(Obstacle, below) && !hasKey(this.state.inventoryItems, below)) {
           return false;
         }
         break;
     }
-
+    // TODO: remove used keys form inventory 
     return true;
   }
 
@@ -105,15 +113,27 @@ class Board extends React.Component<BoardProps, BoardState> {
 
     switch (direction) {
       case 'left':
+        if(enumContains(Item, newCells[playerRow][playerColumn-1])) {
+          this.state.inventoryItems.push(newCells[playerRow][playerColumn-1]);
+        }
         newCells[playerRow][playerColumn-1] = Player.DEFAULT;
         break;
       case 'right':
+        if(enumContains(Item, newCells[playerRow][playerColumn+1])) {
+          this.state.inventoryItems.push(newCells[playerRow][playerColumn+1]);
+        }
         newCells[playerRow][playerColumn+1] = Player.DEFAULT;
         break;
       case 'up':
+        if(enumContains(Item, newCells[playerRow-1][playerColumn])) {
+          this.state.inventoryItems.push(newCells[playerRow-1][playerColumn]);
+        }
         newCells[playerRow-1][playerColumn] = Player.DEFAULT;
         break;
       case 'down':
+        if(enumContains(Item, newCells[playerRow+1][playerColumn])) {
+          this.state.inventoryItems.push(newCells[playerRow+1][playerColumn]);
+        }
         newCells[playerRow+1][playerColumn] = Player.DEFAULT;
         break;
     }
