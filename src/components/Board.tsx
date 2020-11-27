@@ -24,28 +24,45 @@ class Board extends React.Component<BoardProps, BoardState> {
     window.addEventListener('keydown', (event) => {
       switch (event.key) {
         case 'ArrowLeft':
+          this.manipulateBoard("left");
           console.log('Left arrow pressed');
           break;
         case 'ArrowRight':
+          this.manipulateBoard("right");
           console.log('Right arrow pressed');
           break;
         case 'ArrowUp':
-          this.manipulateBoard();
+          this.manipulateBoard("up");
           console.log('Up arrow pressed');
           break;
         case 'ArrowDown':
+          this.manipulateBoard("down");
           console.log('Down arrow pressed');
           break;
       }
     })
   }
+  componentWillUnmount() {
+  }
 
-  manipulateBoard = () => {
+  manipulateBoard = (direction: string) => {
     let newCells = this.state.cells.map(innerArray => innerArray.slice());
     const playerStart = indexOf2d(newCells, Player.DEFAULT);
     if (newCells && playerStart) {
+      
+      if (direction === "up" && playerStart[0]-1 >= 0) {
       newCells[playerStart[0]][playerStart[1]] = Floor.DEFAULT;
       newCells[playerStart[0]-1][playerStart[1]] = Player.DEFAULT;
+      } else if (direction === "left" && playerStart[1]-1 >= 0) {
+        newCells[playerStart[0]][playerStart[1]] = Floor.DEFAULT;
+      newCells[playerStart[0]][playerStart[1]-1] = Player.DEFAULT;
+      } else if (direction === "right" && playerStart[1]+1 != newCells.length) {
+        newCells[playerStart[0]][playerStart[1]] = Floor.DEFAULT;
+      newCells[playerStart[0]][playerStart[1]+1] = Player.DEFAULT;
+      } else if (direction === "down" && playerStart[0]+1 != newCells.length) {
+        newCells[playerStart[0]][playerStart[1]] = Floor.DEFAULT;
+        newCells[playerStart[0]+1][playerStart[1]] = Player.DEFAULT;
+      }
     }
     this.setState({ cells: newCells });
   }
