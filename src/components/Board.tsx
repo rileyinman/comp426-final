@@ -42,7 +42,7 @@ class Board extends React.Component<BoardProps, BoardState> {
 
   manipulateBoard = () => {
     let newCells = this.state.cells.map(innerArray => innerArray.slice());
-    const playerStart = indexOf2d(newCells, 'playerDefault');
+    const playerStart = indexOf2d(newCells, Player.DEFAULT);
     if (newCells && playerStart) {
       newCells[playerStart[0]][playerStart[1]] = Floor.DEFAULT;
       newCells[playerStart[0]-1][playerStart[1]] = Player.DEFAULT;
