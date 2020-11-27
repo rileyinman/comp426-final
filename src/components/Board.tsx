@@ -51,17 +51,25 @@ class Board extends React.Component<BoardProps, BoardState> {
     if (newCells && playerStart) {
       
       if (direction === "up" && playerStart[0]-1 >= 0) {
+        if (newCells[playerStart[0]-1][playerStart[1]] !== Obstacle.WALL) {
       newCells[playerStart[0]][playerStart[1]] = Floor.DEFAULT;
       newCells[playerStart[0]-1][playerStart[1]] = Player.DEFAULT;
+        }
       } else if (direction === "left" && playerStart[1]-1 >= 0) {
+        if (newCells[playerStart[0]][playerStart[1]-1] !== Obstacle.WALL) {
         newCells[playerStart[0]][playerStart[1]] = Floor.DEFAULT;
       newCells[playerStart[0]][playerStart[1]-1] = Player.DEFAULT;
+        }
       } else if (direction === "right" && playerStart[1]+1 != newCells.length) {
+        if (newCells[playerStart[0]][playerStart[1]+1] !== Obstacle.WALL) {
         newCells[playerStart[0]][playerStart[1]] = Floor.DEFAULT;
       newCells[playerStart[0]][playerStart[1]+1] = Player.DEFAULT;
+        }
       } else if (direction === "down" && playerStart[0]+1 != newCells.length) {
+        if (newCells[playerStart[0]+1][playerStart[1]] !== Obstacle.WALL) {
         newCells[playerStart[0]][playerStart[1]] = Floor.DEFAULT;
         newCells[playerStart[0]+1][playerStart[1]] = Player.DEFAULT;
+        }
       }
     }
     this.setState({ cells: newCells });
