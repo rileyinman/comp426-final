@@ -1,3 +1,4 @@
+import { enumContains } from './Enum';
 import { indexOf2d } from './2dArray';
 
-export { indexOf2d };
+export { enumContains, indexOf2d };

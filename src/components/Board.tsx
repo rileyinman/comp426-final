@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Item, Obstacle, Floor, Player } from '../constants';
-import { indexOf2d } from '../helpers';
+import { enumContains, indexOf2d } from '../helpers';
 import Cell from './Cell';
 
 interface BoardProps {
@@ -40,38 +40,81 @@ class Board extends React.Component<BoardProps, BoardState> {
           console.log('Down arrow pressed');
           break;
       }
-    })
+    });
   }
-  componentWillUnmount() {
+
+  canMove = (array: string[][], row: number, column: number, direction: string) => {
+    switch (direction) {
+      case 'left':
+        if (column === 0) {
+          return false;
+        }
+        const toLeft = array[row][column-1];
+        if (enumContains(Obstacle, toLeft)) {
+          return false;
+        }
+        break;
+      case 'right':
+        if (column === array[0].length-1) {
+          return false;
+        }
+        const toRight = array[row][column+1];
+        if (enumContains(Obstacle, toRight)) {
+          return false;
+        }
+        break;
+      case 'up':
+        if (row === 0) {
+          return false;
+        }
+        const above = array[row-1][column];
+        if (enumContains(Obstacle, above)) {
+          return false;
+        }
+        break;
+      case 'down':
+        if (row === array.length-1) {
+          return false;
+        }
+        const below = array[row+1][column];
+        if (enumContains(Obstacle, below)) {
+          return false;
+        }
+        break;
+    }
+
+    return true;
   }
 
   manipulateBoard = (direction: string) => {
     let newCells = this.state.cells.map(innerArray => innerArray.slice());
     const playerStart = indexOf2d(newCells, Player.DEFAULT);
-    if (newCells && playerStart) {
-      
-      if (direction === "up" && playerStart[0]-1 >= 0) {
-        if (newCells[playerStart[0]-1][playerStart[1]] !== Obstacle.WALL) {
-      newCells[playerStart[0]][playerStart[1]] = Floor.DEFAULT;
-      newCells[playerStart[0]-1][playerStart[1]] = Player.DEFAULT;
-        }
-      } else if (direction === "left" && playerStart[1]-1 >= 0) {
-        if (newCells[playerStart[0]][playerStart[1]-1] !== Obstacle.WALL) {
-        newCells[playerStart[0]][playerStart[1]] = Floor.DEFAULT;
-      newCells[playerStart[0]][playerStart[1]-1] = Player.DEFAULT;
-        }
-      } else if (direction === "right" && playerStart[1]+1 != newCells.length) {
-        if (newCells[playerStart[0]][playerStart[1]+1] !== Obstacle.WALL) {
-        newCells[playerStart[0]][playerStart[1]] = Floor.DEFAULT;
-      newCells[playerStart[0]][playerStart[1]+1] = Player.DEFAULT;
-        }
-      } else if (direction === "down" && playerStart[0]+1 != newCells.length) {
-        if (newCells[playerStart[0]+1][playerStart[1]] !== Obstacle.WALL) {
-        newCells[playerStart[0]][playerStart[1]] = Floor.DEFAULT;
-        newCells[playerStart[0]+1][playerStart[1]] = Player.DEFAULT;
-        }
-      }
+    if (!newCells || !playerStart) { return; }
+
+    const playerRow = playerStart[0];
+    const playerColumn = playerStart[1];
+
+    if (!this.canMove(newCells, playerRow, playerColumn, direction)) {
+      return;
     }
+
+    newCells[playerRow][playerColumn] = Floor.DEFAULT;
+
+    switch (direction) {
+      case 'left':
+        newCells[playerRow][playerColumn-1] = Player.DEFAULT;
+        break;
+      case 'right':
+        newCells[playerRow][playerColumn+1] = Player.DEFAULT;
+        break;
+      case 'up':
+        newCells[playerRow-1][playerColumn] = Player.DEFAULT;
+        break;
+      case 'down':
+        newCells[playerRow+1][playerColumn] = Player.DEFAULT;
+        break;
+    }
+
     this.setState({ cells: newCells });
   }
 
