@@ -5,6 +5,8 @@ import { ProtectedRoute } from './auth';
 import { Game, Home, Login, Profile } from './views';
 import { Loading, NavBar } from './components';
 
+import './App.scss';
+
 const App = () => {
   /* const { isLoading } = useAuth0(); */
 
@@ -17,8 +19,8 @@ const App = () => {
       <NavBar/>
       <Switch>
         <Route path='/' exact component={Home}/>
-        <Route path='/game' component={Game}/>
         <Route path='/login' component={Login}/>
+        <ProtectedRoute path='/game' component={Game}/>
         <ProtectedRoute path='/profile' component={Profile}/>
       </Switch>
     </>

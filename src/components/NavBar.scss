@@ -1,0 +1,13 @@
+@import '~react-bulma-components/src/index.sass';
+
+.navbar-link {
+  color: $grey-light;
+  &:hover {
+    background-color: $grey-dark;
+    color: $grey-lightest;
+  }
+}
+
+.navbar-menu {
+  background-color: inherit;
+}
