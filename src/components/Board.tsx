@@ -170,16 +170,28 @@ class Board extends React.Component<BoardProps, BoardState> {
 
   render() {
     const cells = this.state.cells.map((row, index) => (
-        <div key={index}>
+        <div style = {{float: "left"}} key={index}>
           {row.map((cell, index) => <Cell key={index} contains={cell}/>)}
         </div>
     ));
+   const inventory = this.state.inventoryItems.map((item, index) => (
+          <li key={index} style = {{textAlign: "center", color: "black"}}>
+            {item}
+          </li>
+    ));
+  
 
     return (
+      
       <>
         {cells}
-        <Inventory items={this.state.inventoryItems}/>
+        <div style={{color: "black", textAlign: "center"}}> <h1 style={{fontSize: 20}}>Inventory</h1></div>        
+        {inventory}
+        {/*<Inventory items={this.state.inventoryItems}/>*/}
+        
       </>
+
+      
     );
   }
 }

@@ -23,23 +23,28 @@ class Game extends React.Component {
       [ Obstacle.WALL, Floor.DEFAULT,  Floor.DEFAULT, Floor.DEFAULT, Floor.DEFAULT,  Floor.DEFAULT,  Floor.DEFAULT, Floor.DEFAULT,  Floor.DEFAULT,  Obstacle.WALL ],
       [ Obstacle.WALL, Floor.DEFAULT,  Floor.DEFAULT, Floor.DEFAULT, Floor.DEFAULT,  Floor.DEFAULT,  Floor.DEFAULT, Floor.DEFAULT,  Floor.DEFAULT,  Obstacle.WALL ],
       [ Obstacle.WALL, Obstacle.WALL,  Obstacle.WALL, Obstacle.WALL, Obstacle.DOOR1, Obstacle.WALL,  Obstacle.WALL, Obstacle.DOOR2, Obstacle.WALL,  Obstacle.WALL ],
-      [ Obstacle.WALL, Item.KEY1,      Floor.DEFAULT, Floor.DEFAULT, Floor.DEFAULT,  Obstacle.WALL,  Item.KEY3,     Floor.DEFAULT,  Floor.DEFAULT,  Obstacle.WALL ],
+      [ Obstacle.WALL, Item.KEY1,      Item.KEY2, Item.KEY1, Floor.DEFAULT,  Obstacle.WALL,  Item.KEY3,     Floor.DEFAULT,  Floor.DEFAULT,  Obstacle.WALL ],
       [ Obstacle.WALL, Player.DEFAULT, Obstacle.WALL, Obstacle.WALL, Obstacle.WALL,  Obstacle.WALL,  Obstacle.WALL, Obstacle.WALL,  Obstacle.WALL,  Obstacle.WALL ],
     ]
     return (
       <Section>
+        <p style={{color: "black", fontSize: 20}} className='level-display'>Level {levelID}</p>
+        <Button> Restart Level</Button>
+        
       <Tile kind='ancestor'>
+      
+      
         <Tile size={7}>
           <Section className='game-board'>
             <Board cells={cells}/>
           </Section>
+          
         </Tile>
         <Tile>
-          <Button>Restart Level</Button>
-    <p className='level-display'>Level {levelID}</p>
           {/* Put score here? Level timer? */}
         </Tile>
       </Tile>
+      
       </Section>
     );
   }
