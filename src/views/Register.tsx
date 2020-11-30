@@ -4,7 +4,7 @@ import { RouteComponentProps } from 'react-router';
 import Button from 'react-bulma-components/lib/components/button';
 import Card from 'react-bulma-components/lib/components/card';
 import Columns from 'react-bulma-components/lib/components/columns';
-import { Control, Field, Help, Input, Label, Radio } from 'react-bulma-components/lib/components/form';
+import { Control, Field, Help, Input, Label } from 'react-bulma-components/lib/components/form';
 import Heading from 'react-bulma-components/lib/components/heading';
 import Message from 'react-bulma-components/lib/components/message';
 
@@ -124,7 +124,7 @@ class Register extends React.Component<RegisterProps, RegisterState> {
                 <Control className='player-selector'>
                   <Label>Player sprite</Label>
                   {Object.values(Player).map((player, index) => (
-                    <div className='player-radio'>
+                    <div key={index} className='player-radio'>
                       <input
                         type='radio'
                         checked={this.state.player === player}
@@ -133,7 +133,7 @@ class Register extends React.Component<RegisterProps, RegisterState> {
                         name='player'
                         onChange={this.playerHandler}
                       />
-                      <Label class='player' for={player} style={{ backgroundImage: `url(${images[player]})` }}></Label>
+                      <Label className='player' htmlFor={player} style={{ backgroundImage: `url(${images[player]})` }}></Label>
                     </div>
                   ))}
                 </Control>
