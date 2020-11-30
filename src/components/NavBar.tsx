@@ -60,6 +60,11 @@ class NavBar extends React.Component<NavBarProps, NavBarState> {
                 <LoginOutButton/>
               </div>
             </Navbar.Item>
+            <Navbar.Item renderAs='div'>
+              <Link to='/register' onClick={this.collapse}>
+                <Navbar.Link arrowless={true}>Register</Navbar.Link>
+              </Link>
+            </Navbar.Item>
           </Navbar.Container>
         </Navbar.Menu>
       </Navbar>

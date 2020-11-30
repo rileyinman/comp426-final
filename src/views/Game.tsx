@@ -24,7 +24,7 @@ class Game extends React.Component {
       [ Obstacle.WALL, Floor.DEFAULT,  Floor.DEFAULT, Floor.DEFAULT, Floor.DEFAULT,  Floor.DEFAULT,  Floor.DEFAULT, Floor.DEFAULT,  Floor.DEFAULT,  Obstacle.WALL ],
       [ Obstacle.WALL, Obstacle.WALL,  Obstacle.WALL, Obstacle.WALL, Obstacle.DOOR1, Obstacle.WALL,  Obstacle.WALL, Obstacle.DOOR2, Obstacle.WALL,  Obstacle.WALL ],
       [ Obstacle.WALL, Item.KEY1,      Floor.DEFAULT, Floor.DEFAULT, Floor.DEFAULT,  Obstacle.WALL,  Item.KEY3,     Floor.DEFAULT,  Floor.DEFAULT,  Obstacle.WALL ],
-      [ Obstacle.WALL, Player.DEFAULT, Obstacle.WALL, Obstacle.WALL, Obstacle.WALL,  Obstacle.WALL,  Obstacle.WALL, Obstacle.WALL,  Obstacle.WALL,  Obstacle.WALL ],
+      [ Obstacle.WALL, Player.PLAYER1, Obstacle.WALL, Obstacle.WALL, Obstacle.WALL,  Obstacle.WALL,  Obstacle.WALL, Obstacle.WALL,  Obstacle.WALL,  Obstacle.WALL ],
     ]
     return (
       <Section>
@@ -36,7 +36,7 @@ class Game extends React.Component {
         </Tile>
         <Tile>
           <Button>Restart Level</Button>
-    <p className='level-display'>Level {levelID}</p>
+          <p className='level-display'>Level {levelID}</p>
           {/* Put score here? Level timer? */}
         </Tile>
       </Tile>

@@ -20,7 +20,8 @@ enum Floor {
 }
 
 enum Player {
-  DEFAULT = "playerDefault"
+  PLAYER1 = "player1",
+  PLAYER2 = "player2"
 }
 
 export { Item, Obstacle, Floor, Player };

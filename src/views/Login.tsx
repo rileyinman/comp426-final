@@ -1,5 +1,6 @@
 import React from 'react';
 import { RouteComponentProps } from 'react-router';
+import { Link } from 'react-router-dom';
 
 import Button from 'react-bulma-components/lib/components/button';
 import Card from 'react-bulma-components/lib/components/card';

@@ -4,17 +4,19 @@ import { RouteComponentProps } from 'react-router';
 import Button from 'react-bulma-components/lib/components/button';
 import Card from 'react-bulma-components/lib/components/card';
 import Columns from 'react-bulma-components/lib/components/columns';
-import { Control, Field, Help, Input, Label } from 'react-bulma-components/lib/components/form';
+import { Control, Field, Help, Input, Label, Radio } from 'react-bulma-components/lib/components/form';
 import Heading from 'react-bulma-components/lib/components/heading';
 import Message from 'react-bulma-components/lib/components/message';
 
-import { login } from '../services';
-/* import './Login.scss'; */
+import { images } from '../assets';
+import { Player } from '../constants';
+import './Register.scss';
 
 interface RegisterProps extends RouteComponentProps {}
 interface RegisterState {
   username: string,
   password: string,
+  player: string,
   usernameValid: boolean,
   error: string
 }
@@ -25,6 +27,7 @@ class Register extends React.Component<RegisterProps, RegisterState> {
     this.state = {
       username: '',
       password: '',
+      player: 'player1',
       usernameValid: true,
       error: ''
     }
@@ -45,6 +48,11 @@ class Register extends React.Component<RegisterProps, RegisterState> {
     this.setState({ password: value });
   }
 
+  playerHandler = (event: Event) => {
+    const value = (event.target as HTMLInputElement).value;
+    this.setState({ player: value });
+  }
+
   submitHandler = (event: React.FormEvent) => {
     event.preventDefault();
 
@@ -56,14 +64,14 @@ class Register extends React.Component<RegisterProps, RegisterState> {
       this.setState({ error: 'Please enter a username and password' });
     }
 
-    login(this.state.username, this.state.password)
-      .then(() => {
-        let page = { pathname: '/' };
-        if (this.props.location.state) {
-          page = { pathname: (this.props.location as any).state.prevPath };
-        }
-        this.props.history.push(page);
-      }, error => this.setState({ error: 'Could not log in, check credentials' }));
+    /* login(this.state.username, this.state.password) */
+    /*   .then(() => { */
+    /*     let page = { pathname: '/' }; */
+    /*     if (this.props.location.state) { */
+    /*       page = { pathname: (this.props.location as any).state.prevPath }; */
+    /*     } */
+    /*     this.props.history.push(page); */
+    /*   }, error => this.setState({ error: 'Could not log in, check credentials' })); */
   }
 
   render() {
@@ -86,17 +94,17 @@ class Register extends React.Component<RegisterProps, RegisterState> {
     }
 
     return (
-    <Columns className='is-centered login'>
+    <Columns className='is-centered register'>
       <Columns.Column size='one-third'>
         <Card>
-          <Card.Header className='login-header'>
+          <Card.Header className='register-header'>
             <Card.Header.Title className='is-centered'>
-              <Heading size={4} className='login-header-text'>Login</Heading>
+              <Heading size={4} className='register-header-text'>Register</Heading>
             </Card.Header.Title>
           </Card.Header>
 
           <Card.Content>
-            <form className='login-form' onSubmit={this.submitHandler}>
+            <form className='register-form' onSubmit={this.submitHandler}>
               <Field>
                 <Label>Username</Label>
                 <Control>
@@ -112,11 +120,31 @@ class Register extends React.Component<RegisterProps, RegisterState> {
                 </Control>
               </Field>
 
-              <Field>
-                <Control>
-                  <Button type='submit' color='primary'>Login</Button>
+              <Field kind='group'>
+                <Control className='player-selector'>
+                  <Label>Player sprite</Label>
+                  {Object.values(Player).map((player, index) => (
+                    <div className='player-radio'>
+                      <input
+                        type='radio'
+                        checked={this.state.player === player}
+                        id={player}
+                        value={player}
+                        name='player'
+                        onChange={this.playerHandler}
+                      />
+                      <Label class='player' for={player} style={{ backgroundImage: `url(${images[player]})` }}></Label>
+                    </div>
+                  ))}
                 </Control>
               </Field>
+
+              <Field>
+                <Control>
+                  <Button type='submit' color='primary'>Register</Button>
+                </Control>
+              </Field>
+
               {formStatus}
             </form>
           </Card.Content>

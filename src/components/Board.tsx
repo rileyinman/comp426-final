@@ -127,7 +127,7 @@ class Board extends React.Component<BoardProps, BoardState> {
 
   manipulateBoard = (direction: string) => {
     let newCells = this.state.cells.map(innerArray => innerArray.slice());
-    const playerStart = indexOf2d(newCells, Player.DEFAULT);
+    const playerStart = indexOf2d(newCells, Player.PLAYER1);
     if (!newCells || !playerStart) { return; }
 
     const [playerRow, playerColumn] = playerStart;
@@ -143,25 +143,25 @@ class Board extends React.Component<BoardProps, BoardState> {
         if(enumContains(Item, newCells[playerRow][playerColumn-1])) {
           this.state.inventoryItems.push(newCells[playerRow][playerColumn-1] as Item);
         }
-        newCells[playerRow][playerColumn-1] = Player.DEFAULT;
+        newCells[playerRow][playerColumn-1] = Player.PLAYER1;
         break;
       case 'right':
         if(enumContains(Item, newCells[playerRow][playerColumn+1])) {
           this.state.inventoryItems.push(newCells[playerRow][playerColumn+1] as Item);
         }
-        newCells[playerRow][playerColumn+1] = Player.DEFAULT;
+        newCells[playerRow][playerColumn+1] = Player.PLAYER1;
         break;
       case 'up':
         if(enumContains(Item, newCells[playerRow-1][playerColumn])) {
           this.state.inventoryItems.push(newCells[playerRow-1][playerColumn] as Item);
         }
-        newCells[playerRow-1][playerColumn] = Player.DEFAULT;
+        newCells[playerRow-1][playerColumn] = Player.PLAYER1;
         break;
       case 'down':
         if(enumContains(Item, newCells[playerRow+1][playerColumn])) {
           this.state.inventoryItems.push(newCells[playerRow+1][playerColumn] as Item);
         }
-        newCells[playerRow+1][playerColumn] = Player.DEFAULT;
+        newCells[playerRow+1][playerColumn] = Player.PLAYER1;
         break;
     }
 
