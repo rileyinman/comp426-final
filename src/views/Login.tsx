@@ -1,6 +1,5 @@
 import React from 'react';
 import { RouteComponentProps } from 'react-router';
-import { Link } from 'react-router-dom';
 
 import Button from 'react-bulma-components/lib/components/button';
 import Card from 'react-bulma-components/lib/components/card';
@@ -31,8 +30,8 @@ class Login extends React.Component<LoginProps, LoginState> {
     }
   }
 
-  usernameHandler = (event: Event) => {
-    const value = (event.target as HTMLInputElement).value;
+  usernameHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const value = event.target.value;
     if (value.includes(' ')) {
       this.setState({ usernameValid: false });
     } else {
@@ -41,8 +40,8 @@ class Login extends React.Component<LoginProps, LoginState> {
     this.setState({ username: value });
   }
 
-  passwordHandler = (event: Event) => {
-    const value = (event.target as HTMLInputElement).value;
+  passwordHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const value = event.target.value;
     this.setState({ password: value });
   }
 
@@ -83,12 +82,20 @@ class Login extends React.Component<LoginProps, LoginState> {
             {this.state.error}
           </Message.Body>
         </Message>
-      )
+      );
+    } else if ((this.props.location as any).state && (this.props.location as any).state.message) {
+      formStatus = (
+        <Message color='info'>
+          <Message.Body>
+            {(this.props.location as any).state.message}
+          </Message.Body>
+        </Message>
+      );
     }
 
     return (
     <Columns className='is-centered login'>
-      <Columns.Column size='one-third'>
+      <Columns.Column size='two-fifths'>
         <Card>
           <Card.Header className='login-header'>
             <Card.Header.Title className='is-centered'>
