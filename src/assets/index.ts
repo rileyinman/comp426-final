@@ -9,7 +9,7 @@ import key3 from './Key3.png';
 import key4 from './Key4.png';
 import key5 from './Key5.png';
 import player1 from './Player1.png';
-import player2 from './Player1.png';
+import player2 from './Player2.png';
 import wall from './Wall.png';
 import floor from './Floor.png';
 
