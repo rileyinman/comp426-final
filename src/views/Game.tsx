@@ -9,12 +9,13 @@ import { Board } from '../components';
 import './Game.scss';
 
 // TODO: Remove after testing
-import { Item, Obstacle, Floor, Player } from '../constants';
+import { Empty, Floor, Item, Obstacle, Player } from '../constants';
 
 class Game extends React.Component {
   render() {
     const levelID = 0;
     const cells = [
+      [ Empty.DEFAULT, Empty.DEFAULT,  Empty.DEFAULT, Empty.DEFAULT, Empty.DEFAULT,  Floor.EXIT,     Empty.DEFAULT, Empty.DEFAULT,  Empty.DEFAULT,  Empty.DEFAULT ],
       [ Obstacle.WALL, Obstacle.WALL,  Obstacle.WALL, Obstacle.WALL, Obstacle.WALL,  Obstacle.DOOR5, Obstacle.WALL, Obstacle.WALL,  Obstacle.WALL,  Obstacle.WALL ],
       [ Obstacle.WALL, Item.KEY2,      Floor.DEFAULT, Floor.DEFAULT, Floor.DEFAULT,  Floor.DEFAULT,  Floor.DEFAULT, Obstacle.WALL,  Item.KEY5,      Obstacle.WALL ],
       [ Obstacle.WALL, Floor.DEFAULT,  Obstacle.WALL, Obstacle.WALL, Obstacle.WALL,  Obstacle.WALL,  Obstacle.WALL, Obstacle.WALL,  Floor.DEFAULT,  Obstacle.WALL ],

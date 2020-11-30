@@ -1,16 +1,16 @@
 import React from 'react';
 
-import { Item, Obstacle, Floor, Player } from '../constants';
+import { Empty, Floor, Item, Obstacle, Player } from '../constants';
 import { enumContains, indexOf2d } from '../helpers';
 import Cell from './Cell';
 import Inventory from './Inventory';
 
 interface BoardProps {
-  cells: (Item|Obstacle|Floor|Player)[][]
+  cells: (Empty|Floor|Item|Obstacle|Player)[][]
 }
 
 interface BoardState {
-  cells: (Item|Obstacle|Floor|Player)[][],
+  cells: (Empty|Floor|Item|Obstacle|Player)[][],
   inventoryItems: Item[]
 }
 

@@ -1,3 +1,5 @@
+import empty from './Empty.png';
+import exit from './Exit.png';
 import door1 from './Door1.png';
 import door2 from './Door2.png';
 import door3 from './Door3.png';
@@ -14,6 +16,8 @@ import wall from './Wall.png';
 import floor from './Floor.png';
 
 const images = {
+  empty,
+  exit,
   door1, door2, door3, door4, door5,
   key1, key2, key3, key4, key5,
   player1, player2,
