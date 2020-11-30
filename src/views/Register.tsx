@@ -10,6 +10,7 @@ import Message from 'react-bulma-components/lib/components/message';
 
 import { images } from '../assets';
 import { Player } from '../constants';
+import { register } from '../services';
 import './Register.scss';
 
 interface RegisterProps extends RouteComponentProps {}
@@ -33,8 +34,8 @@ class Register extends React.Component<RegisterProps, RegisterState> {
     }
   }
 
-  usernameHandler = (event: Event) => {
-    const value = (event.target as HTMLInputElement).value;
+  usernameHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const value = event.target.value;
     if (value.includes(' ')) {
       this.setState({ usernameValid: false });
     } else {
@@ -43,13 +44,13 @@ class Register extends React.Component<RegisterProps, RegisterState> {
     this.setState({ username: value });
   }
 
-  passwordHandler = (event: Event) => {
-    const value = (event.target as HTMLInputElement).value;
+  passwordHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const value = event.target.value;
     this.setState({ password: value });
   }
 
-  playerHandler = (event: Event) => {
-    const value = (event.target as HTMLInputElement).value;
+  playerHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const value = event.target.value;
     this.setState({ player: value });
   }
 
@@ -64,14 +65,13 @@ class Register extends React.Component<RegisterProps, RegisterState> {
       this.setState({ error: 'Please enter a username and password' });
     }
 
-    /* login(this.state.username, this.state.password) */
-    /*   .then(() => { */
-    /*     let page = { pathname: '/' }; */
-    /*     if (this.props.location.state) { */
-    /*       page = { pathname: (this.props.location as any).state.prevPath }; */
-    /*     } */
-    /*     this.props.history.push(page); */
-    /*   }, error => this.setState({ error: 'Could not log in, check credentials' })); */
+    register(this.state.username, this.state.password, this.state.player)
+      .then(() => {
+        this.props.history.push({
+          pathname: '/login',
+          state: { message: 'Successfully registered. Please log in.' }
+        });
+      }, error => this.setState({ error: 'Could not register user.' }));
   }
 
   render() {
@@ -95,7 +95,7 @@ class Register extends React.Component<RegisterProps, RegisterState> {
 
     return (
     <Columns className='is-centered register'>
-      <Columns.Column size='one-third'>
+      <Columns.Column size='two-fifths'>
         <Card>
           <Card.Header className='register-header'>
             <Card.Header.Title className='is-centered'>

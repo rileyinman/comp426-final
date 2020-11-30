@@ -38,6 +38,14 @@ function getAll() {
   });
 }
 
+function register(username: string, password: string, player: string) {
+  return fetch(`${process.env.REACT_APP_API_URL}/user`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ username, password, player })
+  }).then(parseResponse)
+}
+
 function login(username: string, password: string) {
   return fetch(`${process.env.REACT_APP_API_URL}/login`, {
     method: 'POST',
@@ -58,4 +66,4 @@ function logout() {
   history.push('/');
 }
 
-export { isAuthenticated, getAll, login, logout };
+export { isAuthenticated, getAll, register, login, logout };
