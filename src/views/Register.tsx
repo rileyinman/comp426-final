@@ -27,7 +27,7 @@ class Register extends React.Component<RegisterProps, RegisterState> {
     this.state = {
       username: '',
       password: '',
-      player: 'player1',
+      player: Player.PLAYER1,
       usernameValid: true,
       error: ''
     }
