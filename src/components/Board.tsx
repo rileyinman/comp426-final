@@ -1,11 +1,10 @@
 import React from 'react';
 
-import { Empty, Floor, Item, Obstacle, Player } from '../constants';
-import * as User from '../services/User';
+import { Floor, Item, Obstacle, Player } from '../constants';
 import Cell from './Cell';
 
 interface BoardProps {
-  cells: (Empty|Floor|Item|Obstacle|Player)[][]
+  cells: (Floor|Item|Obstacle|Player)[][]
 }
 
 class Board extends React.Component<BoardProps> {

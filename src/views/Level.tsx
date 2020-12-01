@@ -7,7 +7,7 @@ import Section from 'react-bulma-components/lib/components/section';
 import Tile from 'react-bulma-components/lib/components/tile';
 
 import { Board, Inventory } from '../components';
-import { Empty, Floor, Item, Obstacle, Player } from '../constants';
+import { Floor, Item, Obstacle, Player } from '../constants';
 import { enumContains, indexOf2d } from '../helpers';
 import * as User from '../services/User';
 
@@ -22,7 +22,7 @@ interface LevelParams {
 interface LevelState {
   id: number,
   player: Player,
-  cells: (Empty|Floor|Item|Obstacle|Player)[][],
+  cells: (Floor|Item|Obstacle|Player)[][],
   inventoryItems: Item[]
 }
 

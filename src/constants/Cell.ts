@@ -7,21 +7,18 @@ enum Item {
 }
 
 enum Obstacle {
-  WALL = 'wall',
   DOOR1 = 'door1',
   DOOR2 = 'door2',
   DOOR3 = 'door3',
   DOOR4 = 'door4',
-  DOOR5 = 'door5'
+  DOOR5 = 'door5',
+  EMPTY = 'empty',
+  WALL = 'wall'
 }
 
 enum Floor {
   DEFAULT = 'floor',
   EXIT = 'exit'
-}
-
-enum Empty  {
-  DEFAULT = 'empty'
 }
 
 enum Player {
@@ -31,4 +28,4 @@ enum Player {
   PLAYER4 = 'player4'
 }
 
-export { Empty, Floor, Item, Obstacle, Player };
+export { Floor, Item, Obstacle, Player };
