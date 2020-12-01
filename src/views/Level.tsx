@@ -6,10 +6,8 @@ import Button from 'react-bulma-components/lib/components/button';
 import Section from 'react-bulma-components/lib/components/section';
 import Tile from 'react-bulma-components/lib/components/tile';
 
-// TODO: Remove after testing
-import { Empty, Floor, Item, Obstacle, Player } from '../constants';
-
 import { Board, Inventory } from '../components';
+import { Empty, Floor, Item, Obstacle, Player } from '../constants';
 import { enumContains, indexOf2d } from '../helpers';
 
 import './Level.scss';
