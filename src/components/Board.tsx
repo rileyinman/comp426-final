@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { Empty, Floor, Item, Obstacle, Player } from '../constants';
+import * as User from '../services/User';
 import Cell from './Cell';
 
 interface BoardProps {

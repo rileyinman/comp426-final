@@ -1,12 +1,12 @@
 import React from 'react';
 
-import { isAuthenticated } from '../services';
+import * as User from '../services/User';
 
 import LoginButton from './LoginButton';
 import LogoutButton from './LogoutButton';
 
 const LoginOutButton = () => {
-  return isAuthenticated() ? <LogoutButton/> : <LoginButton/>;
+  return User.isAuthenticated() ? <LogoutButton/> : <LoginButton/>;
 }
 
 export default LoginOutButton;

@@ -9,6 +9,7 @@ import Tile from 'react-bulma-components/lib/components/tile';
 import { Board, Inventory } from '../components';
 import { Empty, Floor, Item, Obstacle, Player } from '../constants';
 import { enumContains, indexOf2d } from '../helpers';
+import * as User from '../services/User';
 
 import './Level.scss';
 
@@ -20,6 +21,7 @@ interface LevelParams {
 
 interface LevelState {
   id: number,
+  player: Player,
   cells: (Empty|Floor|Item|Obstacle|Player)[][],
   inventoryItems: Item[]
 }
@@ -29,34 +31,39 @@ class Level extends React.Component<LevelProps<LevelParams>, LevelState> {
     super(props);
     this.state = {
       id: this.props.match.params.id,
+      player: Player.PLAYER1,
       cells: [],
       inventoryItems: []
     };
   }
 
   componentDidMount() {
+    const userPlayer: Player = User.localData().player;
+    this.setState({ player: userPlayer });
+
     fetch(`${process.env.REACT_APP_API_URL}/level/${this.state.id}`)
-      .then(response => response.text().then(
-        text => this.setState({ cells: JSON.parse(text).cells })
-      ));
+      .then(response => response.text().then(text => {
+        const cells = JSON.parse(text).cells;
+        const playerDefault = indexOf2d(cells, 'player');
+        if (playerDefault) {
+          cells[playerDefault[0]][playerDefault[1]] = this.state.player;
+        }
+        this.setState({ cells });
+      }));
 
     window.addEventListener('keydown', (event) => {
       switch (event.key) {
         case 'ArrowLeft':
           this.manipulateBoard('left');
-          console.log('Left arrow pressed');
           break;
         case 'ArrowRight':
           this.manipulateBoard('right');
-          console.log('Right arrow pressed');
           break;
         case 'ArrowUp':
           this.manipulateBoard('up');
-          console.log('Up arrow pressed');
           break;
         case 'ArrowDown':
           this.manipulateBoard('down');
-          console.log('Down arrow pressed');
           break;
       }
     });
@@ -143,7 +150,7 @@ class Level extends React.Component<LevelProps<LevelParams>, LevelState> {
 
   manipulateBoard = (direction: string) => {
     let newCells = this.state.cells.map(innerArray => innerArray.slice());
-    const playerStart = indexOf2d(newCells, Player.PLAYER1);
+    const playerStart = indexOf2d(newCells, this.state.player);
     if (!newCells || !playerStart) { return; }
 
     const [playerRow, playerColumn] = playerStart;
@@ -159,25 +166,25 @@ class Level extends React.Component<LevelProps<LevelParams>, LevelState> {
         if(enumContains(Item, newCells[playerRow][playerColumn-1])) {
           this.state.inventoryItems.push(newCells[playerRow][playerColumn-1] as Item);
         }
-        newCells[playerRow][playerColumn-1] = Player.PLAYER1;
+        newCells[playerRow][playerColumn-1] = this.state.player;
         break;
       case 'right':
         if(enumContains(Item, newCells[playerRow][playerColumn+1])) {
           this.state.inventoryItems.push(newCells[playerRow][playerColumn+1] as Item);
         }
-        newCells[playerRow][playerColumn+1] = Player.PLAYER1;
+        newCells[playerRow][playerColumn+1] = this.state.player;
         break;
       case 'up':
         if(enumContains(Item, newCells[playerRow-1][playerColumn])) {
           this.state.inventoryItems.push(newCells[playerRow-1][playerColumn] as Item);
         }
-        newCells[playerRow-1][playerColumn] = Player.PLAYER1;
+        newCells[playerRow-1][playerColumn] = this.state.player;
         break;
       case 'down':
         if(enumContains(Item, newCells[playerRow+1][playerColumn])) {
           this.state.inventoryItems.push(newCells[playerRow+1][playerColumn] as Item);
         }
-        newCells[playerRow+1][playerColumn] = Player.PLAYER1;
+        newCells[playerRow+1][playerColumn] = this.state.player;
         break;
     }
 
@@ -201,7 +208,9 @@ class Level extends React.Component<LevelProps<LevelParams>, LevelState> {
               {/* Put score here? Level timer? */}
             </Tile>
             <Tile>
-              <Inventory items={this.state.inventoryItems}/>
+              <Section>
+                <Inventory items={this.state.inventoryItems}/>
+              </Section>
             </Tile>
           </Tile>
         </Tile>
