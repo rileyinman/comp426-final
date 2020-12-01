@@ -1,13 +1,13 @@
 import React from 'react';
 import { Redirect, Route, useLocation } from 'react-router-dom';
 
-import { isAuthenticated } from '../services';
+import * as User from '../services/User';
 
 const ProtectedRoute = ({ component: Component, ...rest }: any) => {
   const location = useLocation();
   return (
     <Route {...rest} render={props => (
-      isAuthenticated()
+      User.isAuthenticated()
         ? <Component {...rest} {...props}/>
         : <Redirect to={{ pathname: '/login', state: { prevPath: location.pathname } }}/>
     )}/>

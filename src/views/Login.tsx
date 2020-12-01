@@ -8,7 +8,7 @@ import { Control, Field, Help, Input, Label } from 'react-bulma-components/lib/c
 import Heading from 'react-bulma-components/lib/components/heading';
 import Message from 'react-bulma-components/lib/components/message';
 
-import { login } from '../services';
+import * as User from '../services/User';
 import './Login.scss';
 
 interface LoginProps extends RouteComponentProps {}
@@ -56,7 +56,7 @@ class Login extends React.Component<LoginProps, LoginState> {
       this.setState({ error: 'Please enter a username and password' });
     }
 
-    login(this.state.username, this.state.password)
+    User.login(this.state.username, this.state.password)
       .then(() => {
         let page = { pathname: '/' };
         if (this.props.location.state) {

@@ -1,48 +1,34 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 import Button from 'react-bulma-components/lib/components/button';
-import Section from 'react-bulma-components/lib/components/section';
-import Tile from 'react-bulma-components/lib/components/tile';
 
-import { Board } from '../components';
+interface GameProps {}
+interface GameState {
+  levels: number[]
+}
 
-import './Game.scss';
+class Game extends React.Component<GameProps, GameState> {
+  constructor(props: GameProps) {
+    super(props);
+    this.state = {
+      levels: []
+    };
+  }
 
-// TODO: Remove after testing
-import { Empty, Floor, Item, Obstacle, Player } from '../constants';
+  componentDidMount() {
+    fetch(`${process.env.REACT_APP_API_URL}/level`)
+      .then(response => response.text().then(
+        text => this.setState({ levels: JSON.parse(text) })
+      ));
+  }
 
-class Game extends React.Component {
   render() {
-    const levelID = 0;
-    const cells = [
-      [ Empty.DEFAULT, Empty.DEFAULT,  Empty.DEFAULT, Empty.DEFAULT, Empty.DEFAULT,  Floor.EXIT,     Empty.DEFAULT, Empty.DEFAULT,  Empty.DEFAULT,  Empty.DEFAULT ],
-      [ Obstacle.WALL, Obstacle.WALL,  Obstacle.WALL, Obstacle.WALL, Obstacle.WALL,  Obstacle.DOOR5, Obstacle.WALL, Obstacle.WALL,  Obstacle.WALL,  Obstacle.WALL ],
-      [ Obstacle.WALL, Item.KEY2,      Floor.DEFAULT, Floor.DEFAULT, Floor.DEFAULT,  Floor.DEFAULT,  Floor.DEFAULT, Obstacle.WALL,  Item.KEY5,      Obstacle.WALL ],
-      [ Obstacle.WALL, Floor.DEFAULT,  Obstacle.WALL, Obstacle.WALL, Obstacle.WALL,  Obstacle.WALL,  Obstacle.WALL, Obstacle.WALL,  Floor.DEFAULT,  Obstacle.WALL ],
-      [ Obstacle.WALL, Obstacle.DOOR3, Obstacle.WALL, Floor.DEFAULT, Floor.DEFAULT,  Item.KEY3,      Floor.DEFAULT, Obstacle.WALL,  Obstacle.DOOR3, Obstacle.WALL ],
-      [ Obstacle.WALL, Floor.DEFAULT,  Floor.DEFAULT, Floor.DEFAULT, Floor.DEFAULT,  Floor.DEFAULT,  Floor.DEFAULT, Floor.DEFAULT,  Floor.DEFAULT,  Obstacle.WALL ],
-      [ Obstacle.WALL, Floor.DEFAULT,  Floor.DEFAULT, Floor.DEFAULT, Floor.DEFAULT,  Floor.DEFAULT,  Floor.DEFAULT, Floor.DEFAULT,  Floor.DEFAULT,  Obstacle.WALL ],
-      [ Obstacle.WALL, Floor.DEFAULT,  Floor.DEFAULT, Floor.DEFAULT, Floor.DEFAULT,  Floor.DEFAULT,  Floor.DEFAULT, Floor.DEFAULT,  Floor.DEFAULT,  Obstacle.WALL ],
-      [ Obstacle.WALL, Obstacle.WALL,  Obstacle.WALL, Obstacle.WALL, Obstacle.DOOR1, Obstacle.WALL,  Obstacle.WALL, Obstacle.DOOR2, Obstacle.WALL,  Obstacle.WALL ],
-      [ Obstacle.WALL, Item.KEY1,      Floor.DEFAULT, Floor.DEFAULT, Floor.DEFAULT,  Obstacle.WALL,  Item.KEY3,     Floor.DEFAULT,  Floor.DEFAULT,  Obstacle.WALL ],
-      [ Obstacle.WALL, Player.PLAYER1, Obstacle.WALL, Obstacle.WALL, Obstacle.WALL,  Obstacle.WALL,  Obstacle.WALL, Obstacle.WALL,  Obstacle.WALL,  Obstacle.WALL ],
-    ]
-    return (
-      <Section>
-      <Tile kind='ancestor'>
-        <Tile size={7}>
-          <Section className='game-board'>
-            <Board cells={cells}/>
-          </Section>
-        </Tile>
-        <Tile>
-          <Button>Restart Level</Button>
-          <p className='level-display'>Level {levelID}</p>
-          {/* Put score here? Level timer? */}
-        </Tile>
-      </Tile>
-      </Section>
-    );
+    return this.state.levels.map((level, index) => (
+      <Link to={{ pathname: `/level/${index}` }}>
+        <Button>Level {index}</Button>
+      </Link>
+    ))
   }
 }
 

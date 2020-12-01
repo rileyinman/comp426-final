@@ -10,7 +10,7 @@ import Message from 'react-bulma-components/lib/components/message';
 
 import { images } from '../assets';
 import { Player } from '../constants';
-import { register } from '../services';
+import * as User from '../services/User';
 import './Register.scss';
 
 interface RegisterProps extends RouteComponentProps {}
@@ -65,7 +65,7 @@ class Register extends React.Component<RegisterProps, RegisterState> {
       this.setState({ error: 'Please enter a username and password' });
     }
 
-    register(this.state.username, this.state.password, this.state.player)
+    User.register(this.state.username, this.state.password, this.state.player)
       .then(() => {
         this.props.history.push({
           pathname: '/login',
