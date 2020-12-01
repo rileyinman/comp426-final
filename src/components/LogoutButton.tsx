@@ -1,7 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-import Button from 'react-bulma-components/lib/components/button';
 import Navbar from 'react-bulma-components/lib/components/navbar';
 
 import { logout } from '../services';

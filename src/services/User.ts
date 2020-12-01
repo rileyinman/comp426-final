@@ -1,3 +1,4 @@
+import { parseResponse } from '../helpers';
 import { history } from '.';
 
 function authHeader() {
@@ -14,13 +15,6 @@ function authHeader() {
   }
 
   return headers;
-}
-
-function parseResponse(response: Response) {
-  return response.text().then(text => {
-    if (response.ok) { return true; }
-    return Promise.reject(response.statusText);
-  });
 }
 
 function isAuthenticated() {

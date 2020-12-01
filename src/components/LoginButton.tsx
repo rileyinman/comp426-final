@@ -1,7 +1,6 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
-import Button from 'react-bulma-components/lib/components/button';
 import Navbar from 'react-bulma-components/lib/components/navbar';
 
 const LoginButton = () => {
