@@ -36,7 +36,11 @@ class Level extends React.Component<LevelProps<LevelParams>, LevelState> {
 
   constructor(props: LevelProps<LevelParams>) {
     super(props);
-    this.state = {
+    this.state = this.getInitialState();
+  }
+
+  getInitialState = () => {
+    return {
       id: this.props.match.params.id,
       player: Player.PLAYER1,
       cells: [],
@@ -45,13 +49,13 @@ class Level extends React.Component<LevelProps<LevelParams>, LevelState> {
       showNPC: false,
       timerStarted: false,
       time: 0
-    };
+    }
   }
 
   restart = () => {
-    this.setState({ inventoryItems: [] });
     this.stopTimer();
     this.resetTimer();
+    this.setState(this.getInitialState());
 
     const userPlayer: Player = User.localData().player;
     this.setState({ player: userPlayer });
