@@ -3,6 +3,7 @@ import { RouteComponentProps } from 'react-router';
 import { Link } from 'react-router-dom';
 
 import Button from 'react-bulma-components/lib/components/button';
+import Heading from 'react-bulma-components/lib/components/heading';
 import Section from 'react-bulma-components/lib/components/section';
 import Tile from 'react-bulma-components/lib/components/tile';
 
@@ -37,7 +38,7 @@ class Level extends React.Component<LevelProps<LevelParams>, LevelState> {
     };
   }
 
-  componentDidMount() {
+  restart = () => {
     const userPlayer: Player = User.localData().player;
     this.setState({ player: userPlayer });
 
@@ -50,6 +51,12 @@ class Level extends React.Component<LevelProps<LevelParams>, LevelState> {
         }
         this.setState({ cells });
       }));
+
+    this.setState({ inventoryItems: [] });
+  }
+
+  componentDidMount() {
+    this.restart();
 
     window.addEventListener('keydown', (event) => {
       switch (event.key) {
@@ -193,8 +200,7 @@ class Level extends React.Component<LevelProps<LevelParams>, LevelState> {
 
   render() {
     return (
-      <Section>
-        <Link to='/game'><Button>Back</Button></Link>
+      <>
         <Tile kind='ancestor'>
           <Tile size={7}>
             <Section className='level-board'>
@@ -203,8 +209,13 @@ class Level extends React.Component<LevelProps<LevelParams>, LevelState> {
           </Tile>
           <Tile kind='parent' vertical>
             <Tile>
-              <Button>Restart Level</Button>
-              <p className='level-display'>Level {this.state.id}</p>
+              <Section>
+                <Heading>Level {this.state.id}</Heading>
+              </Section>
+              <Section>
+                <Link to='/game'><Button>Back</Button></Link>
+                <Button onClick={this.restart}>Restart Level</Button>
+              </Section>
               {/* Put score here? Level timer? */}
             </Tile>
             <Tile>
@@ -214,7 +225,7 @@ class Level extends React.Component<LevelProps<LevelParams>, LevelState> {
             </Tile>
           </Tile>
         </Tile>
-      </Section>
+      </>
     );
   }
 }

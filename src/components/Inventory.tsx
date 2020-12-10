@@ -9,23 +9,16 @@ interface InventoryProps {
   items: Item[]
 }
 
-interface InventoryState {
-  items: Item[]
-}
-
-class Inventory extends React.Component<InventoryProps, InventoryState> {
+class Inventory extends React.Component<InventoryProps> {
   constructor(props: InventoryProps) {
     super(props);
-    this.state = {
-      items: props.items
-    };
   }
 
   render() {
     return (
       <>
         <Heading size={4} className='has-text-centered'>Inventory</Heading>
-        {this.state.items.map((item, index) => <Cell key={index} contains={item}/>)}
+        {this.props.items.map((item, index) => <Cell key={index} contains={item}/>)}
       </>
     )
   }
