@@ -13,7 +13,8 @@ enum Obstacle {
   DOOR4 = 'door4',
   DOOR5 = 'door5',
   EMPTY = 'empty',
-  WALL = 'wall'
+  WALL = 'wall',
+  NPC = 'npc'
 }
 
 enum Floor {

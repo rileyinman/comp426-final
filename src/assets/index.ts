@@ -16,6 +16,7 @@ import player3 from './Player3.png';
 import player4 from './Player4.png';
 import wall from './Wall.png';
 import floor from './Floor.png';
+import npc from './NPC.png';
 
 const images = {
   empty,
@@ -24,6 +25,7 @@ const images = {
   key1, key2, key3, key4, key5,
   player1, player2, player3, player4,
   wall,
+  npc,
   floor
 }
 
