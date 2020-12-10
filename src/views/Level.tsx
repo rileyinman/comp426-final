@@ -200,32 +200,30 @@ class Level extends React.Component<LevelProps<LevelParams>, LevelState> {
 
   render() {
     return (
-      <>
-        <Tile kind='ancestor'>
-          <Tile size={7}>
-            <Section className='level-board'>
-              <Board cells={this.state.cells}/>
+      <Tile kind='ancestor'>
+        <Tile size={7}>
+          <Section className='level-board'>
+            <Board cells={this.state.cells}/>
+          </Section>
+        </Tile>
+        <Tile kind='parent' vertical>
+          <Tile>
+            <Section>
+              <Heading>Level {this.state.id}</Heading>
+            </Section>
+            <Section>
+              <Link to='/game'><Button>Back</Button></Link>
+              <Button onClick={this.restart}>Restart Level</Button>
+            </Section>
+            {/* Put score here? Level timer? */}
+          </Tile>
+          <Tile>
+            <Section>
+              <Inventory items={this.state.inventoryItems}/>
             </Section>
           </Tile>
-          <Tile kind='parent' vertical>
-            <Tile>
-              <Section>
-                <Heading>Level {this.state.id}</Heading>
-              </Section>
-              <Section>
-                <Link to='/game'><Button>Back</Button></Link>
-                <Button onClick={this.restart}>Restart Level</Button>
-              </Section>
-              {/* Put score here? Level timer? */}
-            </Tile>
-            <Tile>
-              <Section>
-                <Inventory items={this.state.inventoryItems}/>
-              </Section>
-            </Tile>
-          </Tile>
         </Tile>
-      </>
+      </Tile>
     );
   }
 }
