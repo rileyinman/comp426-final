@@ -26,10 +26,14 @@ interface LevelState {
   cells: (Floor|Item|Obstacle|Player)[][],
   inventoryItems: Item[],
   npcText: string,
-  showNPC: boolean
+  showNPC: boolean,
+  timerStarted: boolean,
+  time: number
 }
 
 class Level extends React.Component<LevelProps<LevelParams>, LevelState> {
+  timer: number = 0;
+
   constructor(props: LevelProps<LevelParams>) {
     super(props);
     this.state = {
@@ -38,11 +42,17 @@ class Level extends React.Component<LevelProps<LevelParams>, LevelState> {
       cells: [],
       inventoryItems: [],
       npcText: '',
-      showNPC: false
+      showNPC: false,
+      timerStarted: false,
+      time: 0
     };
   }
 
   restart = () => {
+    this.setState({ inventoryItems: [] });
+    this.stopTimer();
+    this.resetTimer();
+
     const userPlayer: Player = User.localData().player;
     this.setState({ player: userPlayer });
 
@@ -60,8 +70,6 @@ class Level extends React.Component<LevelProps<LevelParams>, LevelState> {
         const npcText = data.npcText;
         this.setState({ npcText });
       }));
-
-    this.setState({ inventoryItems: [] });
   }
 
   componentDidMount() {
@@ -70,18 +78,49 @@ class Level extends React.Component<LevelProps<LevelParams>, LevelState> {
     window.addEventListener('keydown', (event) => {
       switch (event.key) {
         case 'ArrowLeft':
+          if (!this.state.timerStarted) {
+            this.startTimer();
+          }
           this.manipulateBoard('left');
           break;
         case 'ArrowRight':
+          if (!this.state.timerStarted) {
+            this.startTimer();
+          }
           this.manipulateBoard('right');
           break;
         case 'ArrowUp':
+          if (!this.state.timerStarted) {
+            this.startTimer();
+          }
           this.manipulateBoard('up');
           break;
         case 'ArrowDown':
+          if (!this.state.timerStarted) {
+            this.startTimer();
+          }
           this.manipulateBoard('down');
           break;
       }
+    });
+  }
+
+  startTimer = () => {
+    this.setState({ timerStarted: true });
+    this.timer = window.setInterval(() => this.setState({
+      time: this.state.time + 1
+    }), 1000);
+  }
+
+  stopTimer = () => {
+    this.setState({ timerStarted: false });
+    window.clearInterval(this.timer);
+  }
+
+  resetTimer = () => {
+    this.setState({
+      timerStarted: false,
+      time: 0
     });
   }
 
@@ -196,6 +235,49 @@ class Level extends React.Component<LevelProps<LevelParams>, LevelState> {
     return false;
   }
 
+  checkWin = (array: string[][], row: number, column: number, direction: string) => {
+    switch (direction) {
+      case 'left':
+        if (column === 0) {
+          return false;
+        }
+        const toLeft = array[row][column-1];
+        if (toLeft === Floor.EXIT) {
+          return true;
+        }
+        break;
+      case 'right':
+        if (column === array[0].length-1) {
+          return false;
+        }
+        const toRight = array[row][column+1];
+        if (toRight === Floor.EXIT) {
+          return true;
+        }
+        break;
+      case 'up':
+        if (row === 0) {
+          return false;
+        }
+        const above = array[row-1][column];
+        if (above === Floor.EXIT) {
+          return true;
+        }
+        break;
+      case 'down':
+        if (row === array.length-1) {
+          return false;
+        }
+        const below = array[row+1][column];
+        if (below === Floor.EXIT) {
+          return true;
+        }
+        break;
+    }
+
+    return false;
+  }
+
   manipulateBoard = (direction: string) => {
     let newCells = this.state.cells.map(innerArray => innerArray.slice());
     let [playerRow, playerColumn] = indexOf2d(newCells, this.state.player);
@@ -235,6 +317,10 @@ class Level extends React.Component<LevelProps<LevelParams>, LevelState> {
 
     this.setState({ cells: newCells });
 
+    if (this.checkWin(newCells, playerRow, playerColumn, direction)) {
+      this.stopTimer();
+    }
+
     [playerRow, playerColumn] = indexOf2d(this.state.cells, this.state.player);
     this.setState({ showNPC: this.checkNPC(playerRow, playerColumn) });
   }
@@ -260,6 +346,9 @@ class Level extends React.Component<LevelProps<LevelParams>, LevelState> {
             <Section>
               <Link to='/game'><Button>Back</Button></Link>
               <Button onClick={this.restart}>Restart Level</Button>
+            </Section>
+            <Section>
+              <Heading>Time: {this.state.time}</Heading>
             </Section>
           </Tile>
           <Tile>
