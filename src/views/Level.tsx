@@ -127,20 +127,20 @@ class Level extends React.Component<LevelProps<LevelParams>, LevelState> {
   unlockDoor = (door: string) => {
     let index = -1;
     switch (door) {
-      case Obstacle.DOOR1:
-        index = this.state.inventoryItems.findIndex(item => item === Item.KEY1);
+      case Obstacle.DOOR_PINK:
+        index = this.state.inventoryItems.findIndex(item => item === Item.KEY_PINK);
         break;
-      case Obstacle.DOOR2:
-        index = this.state.inventoryItems.findIndex(item => item === Item.KEY2);
+      case Obstacle.DOOR_YELLOW:
+        index = this.state.inventoryItems.findIndex(item => item === Item.KEY_YELLOW);
         break;
-      case Obstacle.DOOR3:
-        index = this.state.inventoryItems.findIndex(item => item === Item.KEY3);
+      case Obstacle.DOOR_GREEN:
+        index = this.state.inventoryItems.findIndex(item => item === Item.KEY_GREEN);
         break;
-      case Obstacle.DOOR4:
-        index = this.state.inventoryItems.findIndex(item => item === Item.KEY4);
+      case Obstacle.DOOR_BLUE:
+        index = this.state.inventoryItems.findIndex(item => item === Item.KEY_BLUE);
         break;
-      case Obstacle.DOOR5:
-        index = this.state.inventoryItems.findIndex(item => item === Item.KEY5);
+      case Obstacle.DOOR_PURPLE:
+        index = this.state.inventoryItems.findIndex(item => item === Item.KEY_PURPLE);
         break;
     }
 
@@ -159,9 +159,7 @@ class Level extends React.Component<LevelProps<LevelParams>, LevelState> {
           return false;
         }
         const toLeft = array[row][column-1];
-        if (toLeft === Obstacle.WALL || toLeft === Obstacle.NPC) {
-          return false;
-        } else if (enumContains(Obstacle, toLeft) && !this.unlockDoor(toLeft)) {
+        if (enumContains(Obstacle, toLeft) && !this.unlockDoor(toLeft)) {
           return false;
         }
         break;
@@ -170,9 +168,7 @@ class Level extends React.Component<LevelProps<LevelParams>, LevelState> {
           return false;
         }
         const toRight = array[row][column+1];
-        if (toRight === Obstacle.WALL || toRight === Obstacle.NPC) {
-          return false;
-        } else if (enumContains(Obstacle, toRight) && !this.unlockDoor(toRight)) {
+        if (enumContains(Obstacle, toRight) && !this.unlockDoor(toRight)) {
           return false;
         }
         break;
@@ -181,9 +177,7 @@ class Level extends React.Component<LevelProps<LevelParams>, LevelState> {
           return false;
         }
         const above = array[row-1][column];
-        if (above === Obstacle.WALL || above === Obstacle.NPC) {
-          return false;
-        } else if (enumContains(Obstacle, above) && !this.unlockDoor(above)) {
+        if (enumContains(Obstacle, above) && !this.unlockDoor(above)) {
           return false;
         }
         break;
@@ -192,9 +186,7 @@ class Level extends React.Component<LevelProps<LevelParams>, LevelState> {
           return false;
         }
         const below = array[row+1][column];
-        if (below === Obstacle.WALL || below === Obstacle.NPC) {
-          return false;
-        } else if (enumContains(Obstacle, below) && !this.unlockDoor(below)) {
+        if (enumContains(Obstacle, below) && !this.unlockDoor(below)) {
           return false;
         }
         break;
