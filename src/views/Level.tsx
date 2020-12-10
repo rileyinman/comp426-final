@@ -25,7 +25,8 @@ interface LevelState {
   player: Player,
   cells: (Floor|Item|Obstacle|Player)[][],
   inventoryItems: Item[],
-  npcText: string
+  npcText: string,
+  showNPC: boolean
 }
 
 class Level extends React.Component<LevelProps<LevelParams>, LevelState> {
@@ -36,7 +37,8 @@ class Level extends React.Component<LevelProps<LevelParams>, LevelState> {
       player: Player.PLAYER1,
       cells: [],
       inventoryItems: [],
-      npcText: ''
+      npcText: '',
+      showNPC: false
     };
   }
 
@@ -162,12 +164,41 @@ class Level extends React.Component<LevelProps<LevelParams>, LevelState> {
     return true;
   }
 
+  checkNPC = (row: number, column: number) => {
+    if (column !== 0) {
+      const toLeft = this.state.cells[row][column-1];
+      if (toLeft === Obstacle.NPC) {
+        return true;
+      }
+    }
+
+    if (column !== this.state.cells[0].length-1) {
+      const toRight = this.state.cells[row][column+1];
+      if (toRight === Obstacle.NPC) {
+        return true;
+      }
+    }
+
+    if (row !== 0) {
+      const above = this.state.cells[row-1][column];
+      if (above === Obstacle.NPC) {
+        return true;
+      }
+    }
+
+    if (row !== this.state.cells.length-1) {
+      const below = this.state.cells[row+1][column];
+      if (below === Obstacle.NPC) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
   manipulateBoard = (direction: string) => {
     let newCells = this.state.cells.map(innerArray => innerArray.slice());
-    const playerStart = indexOf2d(newCells, this.state.player);
-    if (!newCells || !playerStart) { return; }
-
-    const [playerRow, playerColumn] = playerStart;
+    let [playerRow, playerColumn] = indexOf2d(newCells, this.state.player);
 
     if (!this.canMove(newCells, playerRow, playerColumn, direction)) {
       return;
@@ -203,9 +234,17 @@ class Level extends React.Component<LevelProps<LevelParams>, LevelState> {
     }
 
     this.setState({ cells: newCells });
+
+    [playerRow, playerColumn] = indexOf2d(this.state.cells, this.state.player);
+    this.setState({ showNPC: this.checkNPC(playerRow, playerColumn) });
   }
 
   render() {
+    let dialogue = null;
+    if (this.state.showNPC) {
+      dialogue = <DialogueBox text={this.state.npcText}/>;
+    }
+
     return (
       <Tile kind='ancestor'>
         <Tile size={7}>
@@ -227,7 +266,7 @@ class Level extends React.Component<LevelProps<LevelParams>, LevelState> {
             <Inventory items={this.state.inventoryItems}/>
           </Tile>
           <Tile>
-            <DialogueBox text={this.state.npcText}/>
+            {dialogue}
           </Tile>
         </Tile>
       </Tile>

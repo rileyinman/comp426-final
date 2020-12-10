@@ -16,8 +16,10 @@ class DialogueBox extends React.Component<DialogueProps> {
   render() {
     return (
       <Section>
-        <Cell contains={Obstacle.NPC} size={180}/>
-        <Box><Heading className='has-text-centered'>Bea</Heading></Box>
+        <Box>
+          <Cell contains={Obstacle.NPC} size={180}/>
+          <Heading className='has-text-centered'>Bea</Heading>
+        </Box>
         <Box>
           <Heading>{this.props.text}</Heading>
         </Box>
