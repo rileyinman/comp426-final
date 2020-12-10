@@ -3,17 +3,11 @@ import { Route, Switch } from 'react-router-dom';
 
 import { ProtectedRoute } from './auth';
 import { Game, Home, Login, Level, Profile, Register } from './views';
-import { Loading, NavBar } from './components';
+import { NavBar } from './components';
 
 import './App.scss';
 
 const App = () => {
-  /* const { isLoading } = useAuth0(); */
-
-  /* if (isLoading) { */
-  /*   return <Loading/> */
-  /* } */
-
   return (
     <>
       <NavBar/>
