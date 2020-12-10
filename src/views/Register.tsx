@@ -8,8 +8,8 @@ import { Control, Field, Help, Input, Label } from 'react-bulma-components/lib/c
 import Heading from 'react-bulma-components/lib/components/heading';
 import Message from 'react-bulma-components/lib/components/message';
 
-import { images } from '../assets';
 import { Player } from '../constants';
+import PlayerSelector from '../components/PlayerSelector';
 import * as User from '../services/User';
 import './Register.scss';
 
@@ -17,7 +17,7 @@ interface RegisterProps extends RouteComponentProps {}
 interface RegisterState {
   username: string,
   password: string,
-  player: string,
+  player: Player,
   usernameValid: boolean,
   error: string
 }
@@ -50,7 +50,7 @@ class Register extends React.Component<RegisterProps, RegisterState> {
   }
 
   playerHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const value = event.target.value;
+    const value = event.target.value as Player;
     this.setState({ player: value });
   }
 
@@ -121,21 +121,9 @@ class Register extends React.Component<RegisterProps, RegisterState> {
               </Field>
 
               <Field kind='group'>
-                <Control className='player-selector'>
+                <Control>
                   <Label>Player sprite</Label>
-                  {Object.values(Player).map((player, index) => (
-                    <div key={index} className='player-radio'>
-                      <input
-                        type='radio'
-                        checked={this.state.player === player}
-                        id={player}
-                        value={player}
-                        name='player'
-                        onChange={this.playerHandler}
-                      />
-                      <Label className='player' htmlFor={player} style={{ backgroundImage: `url(${images[player]})` }}></Label>
-                    </div>
-                  ))}
+                  <PlayerSelector parentForm={this}/>
                 </Control>
               </Field>
 

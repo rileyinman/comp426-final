@@ -1,28 +1,27 @@
 import React from 'react';
 
-import { Floor, Item, Obstacle, Player } from '../constants';
-
 import Box from 'react-bulma-components/lib/components/box';
+import Heading from 'react-bulma-components/lib/components/heading';
+import Section from 'react-bulma-components/lib/components/section';
 
-import './DBox.scss';
 import { images } from '../assets';
+import { Obstacle } from '../constants';
+import Cell from './Cell';
 
 interface DialogueProps {
-  text: string;  
+  text: string;
 };
 
 class DialogueBox extends React.Component<DialogueProps> {
   render() {
     return (
-      <div>
-        <img className='npc' src={images[Obstacle.NPC]} alt={`Tile of npc`}/>
-        <Box>Bea</Box>
+      <Section>
+        <Cell contains={Obstacle.NPC} size={180}/>
+        <Box><Heading className='has-text-centered'>Bea</Heading></Box>
         <Box>
-          <p className='dialogue'>{this.props.text}</p>
+          <Heading>{this.props.text}</Heading>
         </Box>
-
-      </div>
-
+      </Section>
     );
   }
 }

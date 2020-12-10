@@ -3,6 +3,7 @@ import { RouteComponentProps } from 'react-router';
 import { Link } from 'react-router-dom';
 
 import Button from 'react-bulma-components/lib/components/button';
+import Heading from 'react-bulma-components/lib/components/heading';
 import Section from 'react-bulma-components/lib/components/section';
 import Tile from 'react-bulma-components/lib/components/tile';
 
@@ -16,8 +17,7 @@ import './Level.scss';
 interface LevelProps<T> extends RouteComponentProps<T> {}
 
 interface LevelParams {
-  id: number,
-  npcText: string
+  id: number
 }
 
 interface LevelState {
@@ -36,25 +36,34 @@ class Level extends React.Component<LevelProps<LevelParams>, LevelState> {
       player: Player.PLAYER1,
       cells: [],
       inventoryItems: [],
-      npcText: this.props.match.params.npcText
+      npcText: ''
     };
   }
 
-  componentDidMount() {
+  restart = () => {
     const userPlayer: Player = User.localData().player;
     this.setState({ player: userPlayer });
 
     fetch(`${process.env.REACT_APP_API_URL}/level/${this.state.id}`)
       .then(response => response.text().then(text => {
-        const cells = JSON.parse(text).cells;
+        const data = JSON.parse(text);
+
+        const cells = data.cells;
         const playerDefault = indexOf2d(cells, 'player');
         if (playerDefault) {
           cells[playerDefault[0]][playerDefault[1]] = this.state.player;
         }
         this.setState({ cells });
-        const npcText = JSON.parse(text).npcText;
-        this.setState({ npcText: npcText });
+
+        const npcText = data.npcText;
+        this.setState({ npcText });
       }));
+
+    this.setState({ inventoryItems: [] });
+  }
+
+  componentDidMount() {
+    this.restart();
 
     window.addEventListener('keydown', (event) => {
       switch (event.key) {
@@ -198,31 +207,30 @@ class Level extends React.Component<LevelProps<LevelParams>, LevelState> {
 
   render() {
     return (
-      <Section>
-        <Link to='/game'><Button>Back</Button></Link>
-        <Tile kind='ancestor'>
-          <Tile size={7}>
-            <Section className='level-board'>
-              <Board cells={this.state.cells}/>
+      <Tile kind='ancestor'>
+        <Tile size={7}>
+          <Section className='level-board'>
+            <Board cells={this.state.cells}/>
+          </Section>
+        </Tile>
+        <Tile kind='parent' vertical>
+          <Tile>
+            <Section>
+              <Heading>Level {this.state.id}</Heading>
+            </Section>
+            <Section>
+              <Link to='/game'><Button>Back</Button></Link>
+              <Button onClick={this.restart}>Restart Level</Button>
             </Section>
           </Tile>
-          <Tile kind='parent' vertical>
-            <Tile>
-              <Button>Restart Level</Button>
-              <p className='level-display'>Level {this.state.id}</p>
-              {/* Put score here? Level timer? */}
-            </Tile>
-            <Tile>
-              <DialogueBox text={this.state.npcText}></DialogueBox>
-            </Tile>
-            <Tile>
-              <Section>
-                <Inventory items={this.state.inventoryItems}/>
-              </Section>
-            </Tile>
+          <Tile>
+            <Inventory items={this.state.inventoryItems}/>
+          </Tile>
+          <Tile>
+            <DialogueBox text={this.state.npcText}/>
           </Tile>
         </Tile>
-      </Section>
+      </Tile>
     );
   }
 }
