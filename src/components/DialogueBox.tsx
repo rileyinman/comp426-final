@@ -11,10 +11,13 @@ import Cell from './Cell';
 
 interface DialogueProps {
   text: string;
+  traded: boolean;
 };
 
 class DialogueBox extends React.Component<DialogueProps> {
   render() {
+    const preText = this.props.traded ? "I gave you" : "I'll give you";
+
     return (
       <Section>
         <Message.Header>Bea says:</Message.Header>
@@ -24,7 +27,7 @@ class DialogueBox extends React.Component<DialogueProps> {
               <Cell contains={Obstacle.NPC} size={180}/>
             </Media.Item>
             <Media.Item>
-              <Heading subtitle size={5}>{this.props.text}</Heading>
+              <Heading subtitle size={5}>{preText} {this.props.text}.</Heading>
             </Media.Item>
           </Media>
         </Message.Body>

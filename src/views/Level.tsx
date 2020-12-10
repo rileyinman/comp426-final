@@ -9,7 +9,7 @@ import Tile from 'react-bulma-components/lib/components/tile';
 
 import { Board, Inventory, DialogueBox } from '../components';
 import { Floor, Item, Obstacle, Player } from '../constants';
-import { enumContains, indexOf2d } from '../helpers';
+import { arrayAdd, arrayRemove, arraySubset, enumContains, indexOf2d } from '../helpers';
 import * as User from '../services/User';
 
 import './Level.scss';
@@ -27,6 +27,9 @@ interface LevelState {
   inventoryItems: Item[],
   npcText: string,
   showNPC: boolean,
+  give: Item[],
+  take: Item[],
+  traded: boolean,
   timerStarted: boolean,
   time: number
 }
@@ -47,6 +50,9 @@ class Level extends React.Component<LevelProps<LevelParams>, LevelState> {
       inventoryItems: [],
       npcText: '',
       showNPC: false,
+      traded: false,
+      give: [],
+      take: [],
       timerStarted: false,
       time: 0
     }
@@ -69,10 +75,13 @@ class Level extends React.Component<LevelProps<LevelParams>, LevelState> {
         if (playerDefault) {
           cells[playerDefault[0]][playerDefault[1]] = this.state.player;
         }
-        this.setState({ cells });
 
-        const npcText = data.npcText;
-        this.setState({ npcText });
+        this.setState({
+          cells,
+          npcText: data.npcText,
+          give: data.give,
+          take: data.take
+        });
       }));
   }
 
@@ -200,35 +209,43 @@ class Level extends React.Component<LevelProps<LevelParams>, LevelState> {
   }
 
   checkNPC = (row: number, column: number) => {
+    let result = false;
+
     if (column !== 0) {
       const toLeft = this.state.cells[row][column-1];
       if (toLeft === Obstacle.NPC) {
-        return true;
+        result = true;
       }
     }
 
     if (column !== this.state.cells[0].length-1) {
       const toRight = this.state.cells[row][column+1];
       if (toRight === Obstacle.NPC) {
-        return true;
+        result = true;
       }
     }
 
     if (row !== 0) {
       const above = this.state.cells[row-1][column];
       if (above === Obstacle.NPC) {
-        return true;
+        result = true;
       }
     }
 
     if (row !== this.state.cells.length-1) {
       const below = this.state.cells[row+1][column];
       if (below === Obstacle.NPC) {
-        return true;
+        result = true;
       }
     }
 
-    return false;
+    if (result && arraySubset(this.state.inventoryItems, this.state.take)) {
+      arrayRemove(this.state.inventoryItems, this.state.take);
+      arrayAdd(this.state.inventoryItems, this.state.give);
+      this.setState({ traded: true });
+    }
+
+    return result;
   }
 
   checkWin = (array: string[][], row: number, column: number, direction: string) => {
@@ -276,10 +293,20 @@ class Level extends React.Component<LevelProps<LevelParams>, LevelState> {
 
   manipulateBoard = (direction: string) => {
     let newCells = this.state.cells.map(innerArray => innerArray.slice());
-    let [playerRow, playerColumn] = indexOf2d(newCells, this.state.player);
+    let playerLocation = indexOf2d(newCells, this.state.player);
+
+    if (!newCells || !playerLocation) {
+      return;
+    }
+
+    let [playerRow, playerColumn] = playerLocation;
 
     if (!this.canMove(newCells, playerRow, playerColumn, direction)) {
       return;
+    }
+
+    if (this.checkWin(newCells, playerRow, playerColumn, direction)) {
+      this.stopTimer();
     }
 
     newCells[playerRow][playerColumn] = Floor.DEFAULT;
@@ -313,18 +340,16 @@ class Level extends React.Component<LevelProps<LevelParams>, LevelState> {
 
     this.setState({ cells: newCells });
 
-    if (this.checkWin(newCells, playerRow, playerColumn, direction)) {
-      this.stopTimer();
-    }
-
-    [playerRow, playerColumn] = indexOf2d(this.state.cells, this.state.player);
+    playerLocation = indexOf2d(this.state.cells, this.state.player);
+    if (!playerLocation) { return; }
+    [playerRow, playerColumn] = playerLocation;
     this.setState({ showNPC: this.checkNPC(playerRow, playerColumn) });
   }
 
   render() {
     let dialogue = null;
     if (this.state.showNPC) {
-      dialogue = <DialogueBox text={this.state.npcText}/>;
+      dialogue = <DialogueBox text={this.state.npcText} traded={this.state.traded}/>;
     }
 
     return (
