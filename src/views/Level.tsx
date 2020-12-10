@@ -46,7 +46,8 @@ class Level extends React.Component<LevelProps<LevelParams>, LevelState> {
 
   restart = () => {
     this.setState({ inventoryItems: [] });
-    this.setState({ time: 0 });
+    this.stopTimer();
+    this.resetTimer();
 
     const userPlayer: Player = User.localData().player;
     this.setState({ player: userPlayer });
