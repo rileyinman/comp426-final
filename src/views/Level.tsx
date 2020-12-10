@@ -25,13 +25,13 @@ interface LevelState {
   player: Player,
   cells: (Floor|Item|Obstacle|Player)[][],
   inventoryItems: Item[],
-  timer: number,
-  interval: number 
-  
- 
+  timerStarted: boolean,
+  time: number
 }
 
 class Level extends React.Component<LevelProps<LevelParams>, LevelState> {
+  timer: number = 0;
+
   constructor(props: LevelProps<LevelParams>) {
     super(props);
     this.state = {
@@ -39,12 +39,15 @@ class Level extends React.Component<LevelProps<LevelParams>, LevelState> {
       player: Player.PLAYER1,
       cells: [],
       inventoryItems: [],
-      timer: 0,
-      interval: 0
+      timerStarted: false,
+      time: 0
     };
   }
 
   restart = () => {
+    this.setState({ inventoryItems: [] });
+    this.setState({ time: 0 });
+
     const userPlayer: Player = User.localData().player;
     this.setState({ player: userPlayer });
 
@@ -57,42 +60,59 @@ class Level extends React.Component<LevelProps<LevelParams>, LevelState> {
         }
         this.setState({ cells });
       }));
-
-    this.setState({ inventoryItems: [] });
-    this.setState({timer: 0});
-  }
-
-  runTimer = () => {
-    this.setState({ timer: this.state.timer + 1 });
   }
 
   componentDidMount() {
     this.restart();
-    var interval = window.setInterval(this.runTimer, 1000);
-   
-   this.setState({interval: interval});
 
     window.addEventListener('keydown', (event) => {
       switch (event.key) {
         case 'ArrowLeft':
+          if (!this.state.timerStarted) {
+            this.startTimer();
+          }
           this.manipulateBoard('left');
           break;
         case 'ArrowRight':
+          if (!this.state.timerStarted) {
+            this.startTimer();
+          }
           this.manipulateBoard('right');
           break;
         case 'ArrowUp':
+          if (!this.state.timerStarted) {
+            this.startTimer();
+          }
           this.manipulateBoard('up');
           break;
         case 'ArrowDown':
+          if (!this.state.timerStarted) {
+            this.startTimer();
+          }
           this.manipulateBoard('down');
           break;
       }
     });
   }
-  componentWillUnmount() {
-    // use intervalId from the state to clear the interval
-    clearInterval(this.state.interval);
- }
+
+  startTimer = () => {
+    this.setState({ timerStarted: true });
+    this.timer = window.setInterval(() => this.setState({
+      time: this.state.time + 1
+    }), 1000);
+  }
+
+  stopTimer = () => {
+    this.setState({ timerStarted: false });
+    window.clearInterval(this.timer);
+  }
+
+  resetTimer = () => {
+    this.setState({
+      timerStarted: false,
+      time: 0
+    });
+  }
 
   unlockDoor = (door: string) => {
     let index = -1;
@@ -173,6 +193,49 @@ class Level extends React.Component<LevelProps<LevelParams>, LevelState> {
     return true;
   }
 
+  checkWin = (array: string[][], row: number, column: number, direction: string) => {
+    switch (direction) {
+      case 'left':
+        if (column === 0) {
+          return false;
+        }
+        const toLeft = array[row][column-1];
+        if (toLeft === Floor.EXIT) {
+          return true;
+        }
+        break;
+      case 'right':
+        if (column === array[0].length-1) {
+          return false;
+        }
+        const toRight = array[row][column+1];
+        if (toRight === Floor.EXIT) {
+          return true;
+        }
+        break;
+      case 'up':
+        if (row === 0) {
+          return false;
+        }
+        const above = array[row-1][column];
+        if (above === Floor.EXIT) {
+          return true;
+        }
+        break;
+      case 'down':
+        if (row === array.length-1) {
+          return false;
+        }
+        const below = array[row+1][column];
+        if (below === Floor.EXIT) {
+          return true;
+        }
+        break;
+    }
+
+    return false;
+  }
+
   manipulateBoard = (direction: string) => {
     let newCells = this.state.cells.map(innerArray => innerArray.slice());
     const playerStart = indexOf2d(newCells, this.state.player);
@@ -182,6 +245,10 @@ class Level extends React.Component<LevelProps<LevelParams>, LevelState> {
 
     if (!this.canMove(newCells, playerRow, playerColumn, direction)) {
       return;
+    }
+
+    if (this.checkWin(newCells, playerRow, playerColumn, direction)) {
+      this.stopTimer();
     }
 
     newCells[playerRow][playerColumn] = Floor.DEFAULT;
@@ -233,9 +300,8 @@ class Level extends React.Component<LevelProps<LevelParams>, LevelState> {
               <Link to='/game'><Button>Back</Button></Link>
               <Button onClick={this.restart}>Restart Level</Button>
             </Section>
-            {/* Put score here? Level timer? */}
             <Section>
-              <Heading>Time: {this.state.timer} </Heading>
+              <Heading>Time: {this.state.time}</Heading>
             </Section>
           </Tile>
           <Tile>
