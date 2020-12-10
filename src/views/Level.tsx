@@ -6,7 +6,7 @@ import Button from 'react-bulma-components/lib/components/button';
 import Section from 'react-bulma-components/lib/components/section';
 import Tile from 'react-bulma-components/lib/components/tile';
 
-import { Board, Inventory } from '../components';
+import { Board, Inventory, DialogueBox } from '../components';
 import { Floor, Item, Obstacle, Player } from '../constants';
 import { enumContains, indexOf2d } from '../helpers';
 import * as User from '../services/User';
@@ -16,14 +16,16 @@ import './Level.scss';
 interface LevelProps<T> extends RouteComponentProps<T> {}
 
 interface LevelParams {
-  id: number
+  id: number,
+  npcText: string
 }
 
 interface LevelState {
   id: number,
   player: Player,
   cells: (Floor|Item|Obstacle|Player)[][],
-  inventoryItems: Item[]
+  inventoryItems: Item[],
+  npcText: string
 }
 
 class Level extends React.Component<LevelProps<LevelParams>, LevelState> {
@@ -33,7 +35,8 @@ class Level extends React.Component<LevelProps<LevelParams>, LevelState> {
       id: this.props.match.params.id,
       player: Player.PLAYER1,
       cells: [],
-      inventoryItems: []
+      inventoryItems: [],
+      npcText: this.props.match.params.npcText
     };
   }
 
@@ -49,6 +52,8 @@ class Level extends React.Component<LevelProps<LevelParams>, LevelState> {
           cells[playerDefault[0]][playerDefault[1]] = this.state.player;
         }
         this.setState({ cells });
+        const npcText = JSON.parse(text).npcText;
+        this.setState({ npcText: npcText });
       }));
 
     window.addEventListener('keydown', (event) => {
@@ -104,7 +109,7 @@ class Level extends React.Component<LevelProps<LevelParams>, LevelState> {
           return false;
         }
         const toLeft = array[row][column-1];
-        if (toLeft === Obstacle.WALL) {
+        if (toLeft === Obstacle.WALL || toLeft === Obstacle.NPC) {
           return false;
         } else if (enumContains(Obstacle, toLeft) && !this.unlockDoor(toLeft)) {
           return false;
@@ -115,7 +120,7 @@ class Level extends React.Component<LevelProps<LevelParams>, LevelState> {
           return false;
         }
         const toRight = array[row][column+1];
-        if (toRight === Obstacle.WALL) {
+        if (toRight === Obstacle.WALL || toRight === Obstacle.NPC) {
           return false;
         } else if (enumContains(Obstacle, toRight) && !this.unlockDoor(toRight)) {
           return false;
@@ -126,7 +131,7 @@ class Level extends React.Component<LevelProps<LevelParams>, LevelState> {
           return false;
         }
         const above = array[row-1][column];
-        if (above === Obstacle.WALL) {
+        if (above === Obstacle.WALL || above === Obstacle.NPC) {
           return false;
         } else if (enumContains(Obstacle, above) && !this.unlockDoor(above)) {
           return false;
@@ -137,7 +142,7 @@ class Level extends React.Component<LevelProps<LevelParams>, LevelState> {
           return false;
         }
         const below = array[row+1][column];
-        if (below === Obstacle.WALL) {
+        if (below === Obstacle.WALL || below === Obstacle.NPC) {
           return false;
         } else if (enumContains(Obstacle, below) && !this.unlockDoor(below)) {
           return false;
@@ -206,6 +211,9 @@ class Level extends React.Component<LevelProps<LevelParams>, LevelState> {
               <Button>Restart Level</Button>
               <p className='level-display'>Level {this.state.id}</p>
               {/* Put score here? Level timer? */}
+            </Tile>
+            <Tile>
+              <DialogueBox text={this.state.npcText}></DialogueBox>
             </Tile>
             <Tile>
               <Section>
