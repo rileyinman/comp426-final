@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 
 import Navbar from 'react-bulma-components/lib/components/navbar';
 
+import * as User from '../services/User';
+
 import LoginOutButton from './LoginOutButton';
 
 // TODO: Replace logo
@@ -60,7 +62,7 @@ class NavBar extends React.Component<NavBarProps, NavBarState> {
                 <LoginOutButton/>
               </div>
             </Navbar.Item>
-            <Navbar.Item renderAs='div'>
+            <Navbar.Item renderAs='div' style={{display: User.isAuthenticated() && 'none'}}>
               <Link to='/register' onClick={this.collapse}>
                 <Navbar.Link arrowless={true}>Register</Navbar.Link>
               </Link>
