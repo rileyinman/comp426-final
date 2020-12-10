@@ -1,3 +1,4 @@
+import { Player } from '../constants';
 import { parseResponse } from '../helpers';
 import { history } from '.';
 
@@ -42,7 +43,7 @@ function logout() {
   history.push('/');
 }
 
-function register(username: string, password: string, player: string) {
+function register(username: string, password: string, player: Player) {
   return fetch(`${process.env.REACT_APP_API_URL}/user`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
