@@ -24,7 +24,11 @@ interface LevelState {
   id: number,
   player: Player,
   cells: (Floor|Item|Obstacle|Player)[][],
-  inventoryItems: Item[]
+  inventoryItems: Item[],
+  timer: number,
+  interval: number 
+  
+ 
 }
 
 class Level extends React.Component<LevelProps<LevelParams>, LevelState> {
@@ -34,7 +38,9 @@ class Level extends React.Component<LevelProps<LevelParams>, LevelState> {
       id: this.props.match.params.id,
       player: Player.PLAYER1,
       cells: [],
-      inventoryItems: []
+      inventoryItems: [],
+      timer: 0,
+      interval: 0
     };
   }
 
@@ -53,10 +59,18 @@ class Level extends React.Component<LevelProps<LevelParams>, LevelState> {
       }));
 
     this.setState({ inventoryItems: [] });
+    this.setState({timer: 0});
+  }
+
+  runTimer = () => {
+    this.setState({ timer: this.state.timer + 1 });
   }
 
   componentDidMount() {
     this.restart();
+    var interval = window.setInterval(this.runTimer, 1000);
+   
+   this.setState({interval: interval});
 
     window.addEventListener('keydown', (event) => {
       switch (event.key) {
@@ -75,6 +89,10 @@ class Level extends React.Component<LevelProps<LevelParams>, LevelState> {
       }
     });
   }
+  componentWillUnmount() {
+    // use intervalId from the state to clear the interval
+    clearInterval(this.state.interval);
+ }
 
   unlockDoor = (door: string) => {
     let index = -1;
@@ -216,6 +234,9 @@ class Level extends React.Component<LevelProps<LevelParams>, LevelState> {
               <Button onClick={this.restart}>Restart Level</Button>
             </Section>
             {/* Put score here? Level timer? */}
+            <Section>
+              <Heading>Time: {this.state.timer} </Heading>
+            </Section>
           </Tile>
           <Tile>
             <Section>
