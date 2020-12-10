@@ -1,10 +1,21 @@
 import Board from './Board';
 import Cell from './Cell';
+import DialogueBox from './DialogueBox';
 import Inventory from './Inventory';
 import LoginButton from './LoginButton';
 import LoginOutButton from './LoginOutButton';
 import LogoutButton from './LogoutButton';
 import NavBar from './NavBar';
-import DialogueBox from './DialogueBox';
+import PlayerSelector from './PlayerSelector';
 
-export { Board, Cell, Inventory, LoginButton, LoginOutButton, LogoutButton, NavBar, DialogueBox };
+export {
+  Board,
+  Cell,
+  DialogueBox,
+  Inventory,
+  LoginButton,
+  LoginOutButton,
+  LogoutButton,
+  NavBar,
+  PlayerSelector
+};

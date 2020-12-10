@@ -9,7 +9,7 @@ import Heading from 'react-bulma-components/lib/components/heading';
 import Message from 'react-bulma-components/lib/components/message';
 
 import { Player } from '../constants';
-import PlayerSelector from '../components/PlayerSelector';
+import { PlayerSelector } from '../components';
 import * as User from '../services/User';
 import './Register.scss';
 

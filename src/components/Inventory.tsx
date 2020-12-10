@@ -11,10 +11,6 @@ interface InventoryProps {
 }
 
 class Inventory extends React.Component<InventoryProps> {
-  constructor(props: InventoryProps) {
-    super(props);
-  }
-
   render() {
     return (
       <Section>

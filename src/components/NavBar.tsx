@@ -13,14 +13,16 @@ import './NavBar.scss';
 
 interface NavBarProps {}
 interface NavBarState {
-  active: boolean
+  active: boolean,
+  authenticated: boolean
 }
 
 class NavBar extends React.Component<NavBarProps, NavBarState> {
   constructor(props: NavBarProps) {
     super(props);
     this.state = {
-      active: false
+      active: false,
+      authenticated: false
     };
   }
 
@@ -32,7 +34,15 @@ class NavBar extends React.Component<NavBarProps, NavBarState> {
     this.setState({ active: false });
   }
 
+  /* componentDidMount() { */
+  /*   this.setState({ authenticated: User.isAuthenticated() }); */
+  /* } */
+
   render() {
+    if (this.state.authenticated !== User.isAuthenticated()) {
+      this.setState({ authenticated: User.isAuthenticated() });
+    }
+
     return (
       <Navbar color='dark' fixed='top' active={this.state.active}>
         <Navbar.Brand>
@@ -49,9 +59,15 @@ class NavBar extends React.Component<NavBarProps, NavBarState> {
               </Link>
             </Navbar.Item>
 
-            <Navbar.Item renderAs='div'>
+            <Navbar.Item renderAs='div' style={{ display: this.state.authenticated || 'none' }}>
               <Link to='/profile' onClick={this.collapse}>
                 <Navbar.Link arrowless={true}>Profile</Navbar.Link>
+              </Link>
+            </Navbar.Item>
+
+            <Navbar.Item renderAs='div'>
+              <Link to='/scores' onClick={this.collapse}>
+                <Navbar.Link arrowless={true}>Scoreboard</Navbar.Link>
               </Link>
             </Navbar.Item>
           </Navbar.Container>
@@ -62,7 +78,8 @@ class NavBar extends React.Component<NavBarProps, NavBarState> {
                 <LoginOutButton/>
               </div>
             </Navbar.Item>
-            <Navbar.Item renderAs='div' style={{display: User.isAuthenticated() && 'none'}}>
+
+            <Navbar.Item renderAs='div' style={{ display: this.state.authenticated && 'none' }}>
               <Link to='/register' onClick={this.collapse}>
                 <Navbar.Link arrowless={true}>Register</Navbar.Link>
               </Link>

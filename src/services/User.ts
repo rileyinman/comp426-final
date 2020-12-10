@@ -1,6 +1,5 @@
 import { Player } from '../constants';
 import { parseResponse } from '../helpers';
-import { history } from '.';
 
 function getAll() {
   return fetch(`${process.env.REACT_APP_API_URL}/user`);
@@ -40,7 +39,6 @@ function login(username: string, password: string) {
 
 function logout() {
   localStorage.removeItem('user');
-  history.push('/');
 }
 
 function register(username: string, password: string, player: Player) {

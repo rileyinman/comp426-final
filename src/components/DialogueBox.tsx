@@ -5,7 +5,6 @@ import Media from 'react-bulma-components/lib/components/media';
 import Message from 'react-bulma-components/lib/components/message';
 import Section from 'react-bulma-components/lib/components/section';
 
-import { images } from '../assets';
 import { Obstacle } from '../constants';
 import Cell from './Cell';
 

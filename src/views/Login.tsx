@@ -1,5 +1,6 @@
 import React from 'react';
 import { RouteComponentProps } from 'react-router';
+import { Redirect } from 'react-router-dom';
 
 import Button from 'react-bulma-components/lib/components/button';
 import Card from 'react-bulma-components/lib/components/card';
@@ -9,7 +10,6 @@ import Heading from 'react-bulma-components/lib/components/heading';
 import Message from 'react-bulma-components/lib/components/message';
 
 import * as User from '../services/User';
-import { history } from '../services';
 import './Login.scss';
 
 interface LoginProps extends RouteComponentProps {}
@@ -17,7 +17,8 @@ interface LoginState {
   username: string,
   password: string,
   usernameValid: boolean,
-  error: string
+  error: string,
+  redirect: boolean
 }
 
 class Login extends React.Component<LoginProps, LoginState> {
@@ -27,7 +28,8 @@ class Login extends React.Component<LoginProps, LoginState> {
       username: '',
       password: '',
       usernameValid: true,
-      error: ''
+      error: '',
+      redirect: false
     }
   }
 
@@ -57,15 +59,17 @@ class Login extends React.Component<LoginProps, LoginState> {
       this.setState({ error: 'Please enter a username and password' });
     }
 
-    console.log(this.props.location);
-
     User.login(this.state.username, this.state.password)
       .then(() => {
-        history.push('/');
+        this.setState({ redirect: true });
       }, error => this.setState({ error: 'Could not log in, check credentials' }));
   }
 
   render() {
+    if (this.state.redirect) {
+      return <Redirect to='/'/>;
+    }
+
     let usernameColor = null;
     let usernameHelp = null;
     if (!this.state.usernameValid) {

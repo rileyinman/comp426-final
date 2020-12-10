@@ -8,14 +8,10 @@ import { Player } from '../constants';
 import './PlayerSelector.scss';
 
 interface PlayerSelectorProps {
-  parentForm: any
+  parentForm: any;
 }
 
 class PlayerSelector extends React.Component<PlayerSelectorProps> {
-  constructor(props: PlayerSelectorProps) {
-    super(props);
-  }
-
   render() {
     return (
       <div className='player-selector'>
