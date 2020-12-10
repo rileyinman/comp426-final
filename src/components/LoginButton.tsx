@@ -1,12 +1,11 @@
 import React from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import Navbar from 'react-bulma-components/lib/components/navbar';
 
 const LoginButton = () => {
-  const location = useLocation();
   return (
-    <Link to={{ pathname: '/login', state: { prevPath: location.pathname } }}>
+    <Link to='/login'>
       <Navbar.Link arrowless={true}>Login</Navbar.Link>
     </Link>
   );

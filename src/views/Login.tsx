@@ -9,6 +9,7 @@ import Heading from 'react-bulma-components/lib/components/heading';
 import Message from 'react-bulma-components/lib/components/message';
 
 import * as User from '../services/User';
+import { history } from '../services';
 import './Login.scss';
 
 interface LoginProps extends RouteComponentProps {}
@@ -56,13 +57,11 @@ class Login extends React.Component<LoginProps, LoginState> {
       this.setState({ error: 'Please enter a username and password' });
     }
 
+    console.log(this.props.location);
+
     User.login(this.state.username, this.state.password)
       .then(() => {
-        let page = { pathname: '/' };
-        if (this.props.location.state) {
-          page = { pathname: (this.props.location as any).state.prevPath };
-        }
-        this.props.history.push(page);
+        history.push('/');
       }, error => this.setState({ error: 'Could not log in, check credentials' }));
   }
 
