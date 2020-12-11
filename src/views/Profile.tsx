@@ -1,9 +1,12 @@
 import React from 'react';
 
-import { Control, Field, Help, Input, Label } from 'react-bulma-components/lib/components/form';
+import { Control, Field, Input, Label } from 'react-bulma-components/lib/components/form';
+import Heading from 'react-bulma-components/lib/components/heading';
+import Section from 'react-bulma-components/lib/components/section';
+import Tile from 'react-bulma-components/lib/components/tile';
 
 import { Player } from '../constants';
-import { Cell } from '../components';
+import { PlayerSelector } from '../components';
 import * as User from '../services/User';
 
 interface ProfileProps {}
@@ -12,22 +15,39 @@ interface ProfileState {
 }
 
 class Profile extends React.Component<ProfileProps, ProfileState> {
+  userData = User.localData();
+
   constructor(props: ProfileProps) {
     super(props);
     this.state = {
-      player: User.localData().player
+      player: this.userData.player
     };
   }
 
+  playerHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const value = event.target.value as Player;
+    this.setState({ player: value });
+  }
+
+  submitHandler = () => {}
+
   render() {
     return (
-      <Cell contains={this.state.player}/>
+      <Section>
+        <Heading className='has-text-centered'>{this.userData.username}</Heading>
+        <form onSubmit={this.submitHandler}>
+          <Tile kind='ancestor'>
+            <Field>
+              <Label>Player Sprite</Label>
+              <Control>
+                <PlayerSelector parentForm={this}/>
+              </Control>
+            </Field>
+          </Tile>
+        </form>
+      </Section>
     )
   }
 }
-
-/* const Profile = () => ( */
-/*   <div>Placeholder</div> */
-/* ) */
 
 export default Profile;
