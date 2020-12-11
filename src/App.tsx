@@ -15,6 +15,7 @@ const App = () => {
         <Route path='/' exact component={Home}/>
         <Route path='/login' component={Login}/>
         <Route path='/register' component={Register}/>
+        {/* <Route path='/scores' component={Scores}/> */}
         <ProtectedRoute path='/level/:id' component={Level}/>
         <ProtectedRoute path='/game' component={Game}/>
         <ProtectedRoute path='/profile' component={Profile}/>
