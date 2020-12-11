@@ -5,6 +5,17 @@ function getAll() {
   return fetch(`${process.env.REACT_APP_API_URL}/user`);
 }
 
+function getUser(username: string) {
+  return fetch (`${process.env.REACT_APP_API_URL}/user/${username}`)
+    .then(response => response.text().then(text => {
+      if (response.ok) {
+        return JSON.parse(text);
+      }
+
+      return Promise.reject(response.statusText);
+    }));
+}
+
 function isAuthenticated() {
   if (localStorage.getItem('user')) {
     return true;
@@ -49,4 +60,4 @@ function register(username: string, password: string, player: Player) {
   }).then(parseResponse)
 }
 
-export { getAll, isAuthenticated, localData, login, logout, register };
+export { getAll, getUser, isAuthenticated, localData, login, logout, register };
