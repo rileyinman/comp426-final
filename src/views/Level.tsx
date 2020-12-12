@@ -307,6 +307,18 @@ class Level extends React.Component<LevelProps<LevelParams>, LevelState> {
 
     if (this.checkWin(newCells, playerRow, playerColumn, direction)) {
       this.stopTimer();
+      this.setState({ timerStarted: true });
+      //console.log(this.state.time);
+      //console.log(User.localData().username);
+      let username = User.localData().username;
+      User.getUser(username).then(() => 
+      
+        User.update(username,{
+          score: this.state.time,
+          level: this.state.id
+        }));
+
+
     }
 
     newCells[playerRow][playerColumn] = Floor.DEFAULT;
