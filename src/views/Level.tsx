@@ -312,8 +312,16 @@ class Level extends React.Component<LevelProps<LevelParams>, LevelState> {
 
     if (this.checkWin(newCells, playerRow, playerColumn, direction)) {
       this.stopTimer();
-      this.setState({ won: true });
 
+      let username = User.localData().username;
+
+      User.getUser(username)
+        .then(() => User.update(username, {
+          score: this.state.time,
+          level: this.state.id
+        }));
+
+      this.setState({ won: true });
     }
 
     newCells[playerRow][playerColumn] = Floor.DEFAULT;
@@ -368,20 +376,6 @@ class Level extends React.Component<LevelProps<LevelParams>, LevelState> {
     if (this.state.showNPC) {
       dialogue = <DialogueBox text={this.state.npcText} traded={this.state.traded}/>;
     }
-
-    // let winPopup = null;
-    // if (this.state.won) {
-    //   winPopup = 
-    //   <Modal>
-    //     <Modal.Background></Modal.Background>
-    //     <Modal.Content>
-    //       <p>You Won! Continue to next level</p>
-    //       <Link to={{ pathname: `/level/${this.state.id + 2}` }}>
-    //         <Button>Continue to next level</Button>
-    //       </Link>
-    //     </Modal.Content>
-    //   </Modal>      
-    // }
 
     return (
       <Tile kind='ancestor'>

@@ -5,6 +5,17 @@ function getAll() {
   return fetch(`${process.env.REACT_APP_API_URL}/user`);
 }
 
+function getUser(username: string) {
+  return fetch (`${process.env.REACT_APP_API_URL}/user/${username}`)
+    .then(response => response.text().then(text => {
+      if (response.ok) {
+        return JSON.parse(text);
+      }
+
+      return Promise.reject(response.statusText);
+    }));
+}
+
 function isAuthenticated() {
   if (localStorage.getItem('user')) {
     return true;
@@ -46,7 +57,15 @@ function register(username: string, password: string, player: Player) {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ username, password, player })
-  }).then(parseResponse)
+  }).then(parseResponse);
 }
 
-export { getAll, isAuthenticated, localData, login, logout, register };
+function update(username: string, data: { password?: string, level?: number, score?: number, player?: Player}) {
+  return fetch(`${process.env.REACT_APP_API_URL}/user/${username}`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data)
+  }).then(parseResponse);
+}
+
+export { getAll, getUser, isAuthenticated, localData, login, logout, register, update };
