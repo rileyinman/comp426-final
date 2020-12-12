@@ -57,7 +57,15 @@ function register(username: string, password: string, player: Player) {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ username, password, player })
-  }).then(parseResponse)
+  }).then(parseResponse);
 }
 
-export { getAll, getUser, isAuthenticated, localData, login, logout, register };
+function update(username: string, data: { password?: string, level?: number, score?: number, player?: Player}) {
+  return fetch(`${process.env.REACT_APP_API_URL}/user/${username}`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data)
+  }).then(parseResponse);
+}
+
+export { getAll, getUser, isAuthenticated, localData, login, logout, register, update };
