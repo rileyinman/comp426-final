@@ -310,11 +310,10 @@ class Level extends React.Component<LevelProps<LevelParams>, LevelState> {
 
       let username = User.localData().username;
 
-      User.getUser(username)
-        .then(() => User.update(username, {
-          score: this.state.time,
-          level: this.state.id
-        }));
+      User.getUser(username).then(() => User.update(username, {
+        score: this.state.time,
+        level: this.state.id
+      }));
     }
 
     newCells[playerRow][playerColumn] = Floor.DEFAULT;
