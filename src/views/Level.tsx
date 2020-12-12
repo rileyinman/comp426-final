@@ -6,6 +6,7 @@ import Button from 'react-bulma-components/lib/components/button';
 import Heading from 'react-bulma-components/lib/components/heading';
 import Section from 'react-bulma-components/lib/components/section';
 import Tile from 'react-bulma-components/lib/components/tile';
+import Modal from 'react-bulma-components/lib/components/modal';
 
 import { Board, Inventory, DialogueBox } from '../components';
 import { Floor, Item, Obstacle, Player } from '../constants';
@@ -13,6 +14,7 @@ import { arrayAdd, arrayRemove, arraySubset, enumContains, indexOf2d } from '../
 import * as User from '../services/User';
 
 import './Level.scss';
+import { timeStamp } from 'console';
 
 interface LevelProps<T> extends RouteComponentProps<T> {}
 
@@ -31,7 +33,9 @@ interface LevelState {
   take: Item[],
   traded: boolean,
   timerStarted: boolean,
-  time: number
+  time: number,
+  won: boolean
+
 }
 
 class Level extends React.Component<LevelProps<LevelParams>, LevelState> {
@@ -54,7 +58,8 @@ class Level extends React.Component<LevelProps<LevelParams>, LevelState> {
       give: [],
       take: [],
       timerStarted: false,
-      time: 0
+      time: 0,
+      won: false
     }
   }
 
@@ -238,7 +243,7 @@ class Level extends React.Component<LevelProps<LevelParams>, LevelState> {
         result = true;
       }
     }
-
+    
     if (result && arraySubset(this.state.inventoryItems, this.state.take)) {
       arrayRemove(this.state.inventoryItems, this.state.take);
       arrayAdd(this.state.inventoryItems, this.state.give);
@@ -307,6 +312,8 @@ class Level extends React.Component<LevelProps<LevelParams>, LevelState> {
 
     if (this.checkWin(newCells, playerRow, playerColumn, direction)) {
       this.stopTimer();
+      this.setState({ won: true });
+
     }
 
     newCells[playerRow][playerColumn] = Floor.DEFAULT;
@@ -346,11 +353,35 @@ class Level extends React.Component<LevelProps<LevelParams>, LevelState> {
     this.setState({ showNPC: this.checkNPC(playerRow, playerColumn) });
   }
 
+  nextLevel = () => {
+    if(this.state.won) {
+      this.setState({ won: false });
+      const next = this.state.id + 1;
+      this.setState({ id: next });
+      this.restart();
+    }
+
+  }
+
   render() {
     let dialogue = null;
     if (this.state.showNPC) {
       dialogue = <DialogueBox text={this.state.npcText} traded={this.state.traded}/>;
     }
+
+    // let winPopup = null;
+    // if (this.state.won) {
+    //   winPopup = 
+    //   <Modal>
+    //     <Modal.Background></Modal.Background>
+    //     <Modal.Content>
+    //       <p>You Won! Continue to next level</p>
+    //       <Link to={{ pathname: `/level/${this.state.id + 2}` }}>
+    //         <Button>Continue to next level</Button>
+    //       </Link>
+    //     </Modal.Content>
+    //   </Modal>      
+    // }
 
     return (
       <Tile kind='ancestor'>
@@ -378,6 +409,12 @@ class Level extends React.Component<LevelProps<LevelParams>, LevelState> {
           <Tile>
             {dialogue}
           </Tile>
+          <Modal show={this.state.won} onClose={() => this.setState({ won: false })} center>
+            <div>
+              <p className='win-popup'>You Won! Continue to next level</p>
+            </div>
+            <Button onClick={this.nextLevel}>Continue to next level</Button>
+          </Modal> 
         </Tile>
       </Tile>
     );
