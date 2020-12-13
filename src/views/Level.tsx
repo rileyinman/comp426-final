@@ -361,16 +361,6 @@ class Level extends React.Component<LevelProps<LevelParams>, LevelState> {
     this.setState({ showNPC: this.checkNPC(playerRow, playerColumn) });
   }
 
-  nextLevel = () => {
-    if(this.state.won) {
-      this.setState({ won: false });
-      const next = this.state.id + 1;
-      this.setState({ id: next });
-      this.restart();
-    }
-
-  }
-
   render() {
     let dialogue = null;
     if (this.state.showNPC) {
@@ -405,9 +395,11 @@ class Level extends React.Component<LevelProps<LevelParams>, LevelState> {
           </Tile>
           <Modal show={this.state.won} onClose={() => this.setState({ won: false })} center>
             <div>
-              <p className='win-popup'>You Won! Continue to next level</p>
+              <p className='win-popup'>You did it!</p>
             </div>
-            <Button onClick={this.nextLevel}>Continue to next level</Button>
+            <Link to='/game'>
+              <Button>Continue to next level</Button>
+            </Link> 
           </Modal> 
         </Tile>
       </Tile>
