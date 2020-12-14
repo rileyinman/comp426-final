@@ -33,19 +33,21 @@ function localData() {
   return null;
 }
 
-function login(username: string, password: string) {
-  return fetch(`${process.env.REACT_APP_API_URL}/login`, {
+async function login(username: string, password: string) {
+  const success = fetch(`${process.env.REACT_APP_API_URL}/login`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ username, password })
-  }).then(parseResponse)
-    .then(() => {
-      fetch(`${process.env.REACT_APP_API_URL}/user/${username}`)
-        .then(response => response.text().then(text => {
-          let { scores: omitted, ...userData } = JSON.parse(text);
-          localStorage.setItem('user', JSON.stringify(userData));
-        }));
-    });
+  }).then(parseResponse);
+
+  if (success) {
+    const text = await fetch(`${process.env.REACT_APP_API_URL}/user/${username}`).then(response => response.text());
+    let { scores: omitted, ...userData } = JSON.parse(text);
+    localStorage.setItem('user', JSON.stringify(userData));
+    return true;
+  }
+
+  return false;
 }
 
 function logout() {

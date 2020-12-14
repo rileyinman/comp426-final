@@ -14,11 +14,11 @@ import './Login.scss';
 
 interface LoginProps extends RouteComponentProps {}
 interface LoginState {
-  username: string,
-  password: string,
-  usernameValid: boolean,
-  error: string,
-  redirect: boolean
+  username: string;
+  password: string;
+  usernameValid: boolean;
+  error: string;
+  redirect: boolean;
 }
 
 class Login extends React.Component<LoginProps, LoginState> {
@@ -48,7 +48,7 @@ class Login extends React.Component<LoginProps, LoginState> {
     this.setState({ password: value });
   }
 
-  submitHandler = (event: React.FormEvent) => {
+  submitHandler = async (event: React.FormEvent) => {
     event.preventDefault();
 
     if (!this.state.usernameValid) {
@@ -59,15 +59,17 @@ class Login extends React.Component<LoginProps, LoginState> {
       this.setState({ error: 'Please enter a username and password' });
     }
 
-    User.login(this.state.username, this.state.password)
-      .then(() => {
-        this.setState({ redirect: true });
-      }, error => this.setState({ error: 'Could not log in, check credentials' }));
+    const loggedIn = await User.login(this.state.username, this.state.password);
+    if (loggedIn) {
+      this.setState({ redirect: true });
+    } else {
+      this.setState({ error: 'Could not log in, check credentials' });
+    }
   }
 
   render() {
     if (this.state.redirect) {
-      return <Redirect to='/'/>;
+      return <Redirect to={{ pathname: '/', state: { reload: true } }}/>;
     }
 
     let usernameColor = null;
@@ -86,14 +88,17 @@ class Login extends React.Component<LoginProps, LoginState> {
           </Message.Body>
         </Message>
       );
-    } else if ((this.props.location as any).state && (this.props.location as any).state.message) {
-      formStatus = (
-        <Message color='info'>
-          <Message.Body>
-            {(this.props.location as any).state.message}
-          </Message.Body>
-        </Message>
-      );
+    } else {
+      const { state } = this.props.location;
+      if (state && (state as any).message) {
+        formStatus = (
+          <Message color='info'>
+            <Message.Body>
+              {(this.props.location as any).state.message}
+            </Message.Body>
+          </Message>
+        );
+      }
     }
 
     return (
