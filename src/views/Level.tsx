@@ -64,8 +64,8 @@ class Level extends React.Component<LevelProps<LevelParams>, LevelState> {
     this.resetTimer();
     this.setState(this.getInitialState());
 
-    const userPlayer: Player = User.localData().player;
-    this.setState({ player: userPlayer });
+    const player: Player = User.localData().player;
+    this.setState({ player });
 
     fetch(`${process.env.REACT_APP_API_URL}/level/${this.props.match.params.id}`)
       .then(response => response.text().then(text => {
@@ -293,20 +293,20 @@ class Level extends React.Component<LevelProps<LevelParams>, LevelState> {
   }
 
   manipulateBoard = (direction: string) => {
-    let newCells = this.state.cells.map(innerArray => innerArray.slice());
-    let playerLocation = indexOf2d(newCells, this.state.player);
+    let cells = this.state.cells.map(innerArray => innerArray.slice());
+    let playerLocation = indexOf2d(cells, this.state.player);
 
-    if (!newCells || !playerLocation) {
+    if (!cells || !playerLocation) {
       return;
     }
 
     let [playerRow, playerColumn] = playerLocation;
 
-    if (!this.canMove(newCells, playerRow, playerColumn, direction)) {
+    if (!this.canMove(cells, playerRow, playerColumn, direction)) {
       return;
     }
 
-    if (this.checkWin(newCells, playerRow, playerColumn, direction)) {
+    if (this.checkWin(cells, playerRow, playerColumn, direction)) {
       this.stopTimer();
       this.setState({ won: true });
 
@@ -318,36 +318,36 @@ class Level extends React.Component<LevelProps<LevelParams>, LevelState> {
       }));
     }
 
-    newCells[playerRow][playerColumn] = Floor.DEFAULT;
+    cells[playerRow][playerColumn] = Floor.DEFAULT;
 
     switch (direction) {
       case 'left':
-        if(enumContains(Item, newCells[playerRow][playerColumn-1])) {
-          this.state.inventoryItems.push(newCells[playerRow][playerColumn-1] as Item);
+        if(enumContains(Item, cells[playerRow][playerColumn-1])) {
+          this.state.inventoryItems.push(cells[playerRow][playerColumn-1] as Item);
         }
-        newCells[playerRow][playerColumn-1] = this.state.player;
+        cells[playerRow][playerColumn-1] = this.state.player;
         break;
       case 'right':
-        if(enumContains(Item, newCells[playerRow][playerColumn+1])) {
-          this.state.inventoryItems.push(newCells[playerRow][playerColumn+1] as Item);
+        if(enumContains(Item, cells[playerRow][playerColumn+1])) {
+          this.state.inventoryItems.push(cells[playerRow][playerColumn+1] as Item);
         }
-        newCells[playerRow][playerColumn+1] = this.state.player;
+        cells[playerRow][playerColumn+1] = this.state.player;
         break;
       case 'up':
-        if(enumContains(Item, newCells[playerRow-1][playerColumn])) {
-          this.state.inventoryItems.push(newCells[playerRow-1][playerColumn] as Item);
+        if(enumContains(Item, cells[playerRow-1][playerColumn])) {
+          this.state.inventoryItems.push(cells[playerRow-1][playerColumn] as Item);
         }
-        newCells[playerRow-1][playerColumn] = this.state.player;
+        cells[playerRow-1][playerColumn] = this.state.player;
         break;
       case 'down':
-        if(enumContains(Item, newCells[playerRow+1][playerColumn])) {
-          this.state.inventoryItems.push(newCells[playerRow+1][playerColumn] as Item);
+        if(enumContains(Item, cells[playerRow+1][playerColumn])) {
+          this.state.inventoryItems.push(cells[playerRow+1][playerColumn] as Item);
         }
-        newCells[playerRow+1][playerColumn] = this.state.player;
+        cells[playerRow+1][playerColumn] = this.state.player;
         break;
     }
 
-    this.setState({ cells: newCells });
+    this.setState({ cells });
 
     playerLocation = indexOf2d(this.state.cells, this.state.player);
     if (!playerLocation) { return; }

@@ -35,23 +35,25 @@ class Register extends React.Component<RegisterProps, RegisterState> {
   }
 
   usernameHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const value = event.target.value;
-    if (value.includes(' ')) {
+    const username = event.target.value;
+
+    if (username.includes(' ')) {
       this.setState({ usernameValid: false });
     } else {
       this.setState({ usernameValid: true });
     }
-    this.setState({ username: value });
+
+    this.setState({ username });
   }
 
   passwordHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const value = event.target.value;
-    this.setState({ password: value });
+    const password = event.target.value;
+    this.setState({ password });
   }
 
   playerHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const value = event.target.value as Player;
-    this.setState({ player: value });
+    const player = event.target.value as Player;
+    this.setState({ player });
   }
 
   submitHandler = (event: React.FormEvent) => {

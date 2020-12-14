@@ -25,7 +25,9 @@ class Game extends React.Component<GameProps, GameState> {
       .then(response => response.text().then(
         text => this.setState({ levels: JSON.parse(text) })
       ));
-    User.getUser(User.localData().username).then(user => this.setState({unlocked: user.scores.length}))
+
+    User.getUser(User.localData().username)
+      .then(user => this.setState({ unlocked: user.scores.length }));
   }
 
   render() {

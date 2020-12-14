@@ -1,5 +1,4 @@
 import React from 'react';
-import { Redirect } from 'react-router-dom';
 
 import Button from 'react-bulma-components/lib/components/button';
 import Columns from 'react-bulma-components/lib/components/columns';
@@ -17,7 +16,7 @@ interface ProfileState {
   password?: string;
   player: Player;
   scores: number[];
-  redirect: boolean;
+  refresh: boolean;
 }
 
 class Profile extends React.Component<ProfileProps, ProfileState> {
@@ -29,7 +28,7 @@ class Profile extends React.Component<ProfileProps, ProfileState> {
       password: undefined,
       player: this.userData.player,
       scores: [],
-      redirect: false
+      refresh: false
     };
   }
 
@@ -49,16 +48,23 @@ class Profile extends React.Component<ProfileProps, ProfileState> {
     this.setState({ password });
   }
 
-  submitHandler = () => {
-    User.update(this.userData.username, {
+  submitHandler = async (event: React.FormEvent) => {
+    event.preventDefault();
+
+    console.log(this.state.password);
+    console.log(this.state.player);
+
+    const refresh = await User.update(this.userData.username, {
       password: this.state.password,
       player: this.state.player
-    }).then(() => this.setState({ redirect: true }));
+    })
+
+    this.setState({ refresh });
   }
 
   render() {
-    if (this.state.redirect) {
-      return <Redirect to='/'/>;
+    if (this.state.refresh) {
+      window.location.reload();
     }
 
     return (

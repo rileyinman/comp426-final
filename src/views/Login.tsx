@@ -34,18 +34,20 @@ class Login extends React.Component<LoginProps, LoginState> {
   }
 
   usernameHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const value = event.target.value;
-    if (value.includes(' ')) {
+    const username = event.target.value;
+
+    if (username.includes(' ')) {
       this.setState({ usernameValid: false });
     } else {
       this.setState({ usernameValid: true });
     }
-    this.setState({ username: value });
+
+    this.setState({ username });
   }
 
   passwordHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const value = event.target.value;
-    this.setState({ password: value });
+    const password = event.target.value;
+    this.setState({ password });
   }
 
   submitHandler = async (event: React.FormEvent) => {
@@ -59,10 +61,9 @@ class Login extends React.Component<LoginProps, LoginState> {
       this.setState({ error: 'Please enter a username and password' });
     }
 
-    const loggedIn = await User.login(this.state.username, this.state.password);
-    if (loggedIn) {
-      this.setState({ redirect: true });
-    } else {
+    const redirect = await User.login(this.state.username, this.state.password);
+    this.setState({ redirect });
+    if (!redirect) {
       this.setState({ error: 'Could not log in, check credentials' });
     }
   }
