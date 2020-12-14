@@ -312,6 +312,7 @@ class Level extends React.Component<LevelProps<LevelParams>, LevelState> {
 
     if (this.checkWin(newCells, playerRow, playerColumn, direction)) {
       this.stopTimer();
+      this.setState({ won: true });
 
       let username = User.localData().username;
 
@@ -392,7 +393,7 @@ class Level extends React.Component<LevelProps<LevelParams>, LevelState> {
           </Tile>
           <Modal show={this.state.won} onClose={() => this.setState({ won: false })} center>
             <div>
-              <p className='win-popup'>You did it!</p>
+              <h2>You did it!</h2>
             </div>
             <Link to='/game'>
               <Button>Continue to next level</Button>
