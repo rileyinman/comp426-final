@@ -15,11 +15,11 @@ import './Register.scss';
 
 interface RegisterProps extends RouteComponentProps {}
 interface RegisterState {
-  username: string,
-  password: string,
-  player: Player,
-  usernameValid: boolean,
-  error: string
+  username: string;
+  password: string;
+  player: Player;
+  usernameValid: boolean;
+  error: string;
 }
 
 class Register extends React.Component<RegisterProps, RegisterState> {

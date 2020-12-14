@@ -14,12 +14,11 @@ import { arrayAdd, arrayRemove, arraySubset, enumContains, indexOf2d } from '../
 import * as User from '../services/User';
 
 import './Level.scss';
-import { timeStamp } from 'console';
 
 interface LevelProps<T> extends RouteComponentProps<T> {}
 
 interface LevelParams {
-  id: number
+  id: number;
 }
 
 interface LevelState {
@@ -35,7 +34,6 @@ interface LevelState {
   timerStarted: boolean,
   time: number,
   won: boolean
-
 }
 
 class Level extends React.Component<LevelProps<LevelParams>, LevelState> {
@@ -386,7 +384,10 @@ class Level extends React.Component<LevelProps<LevelParams>, LevelState> {
             </Section>
           </Tile>
           <Tile>
-            <Inventory items={this.state.inventoryItems}/>
+            <Section>
+              <Heading size={4} className='has-text-centered'>Inventory</Heading>
+              <Inventory items={this.state.inventoryItems}/>
+            </Section>
           </Tile>
           <Tile>
             {dialogue}

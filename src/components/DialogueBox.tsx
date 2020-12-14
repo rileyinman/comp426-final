@@ -11,7 +11,7 @@ import Cell from './Cell';
 interface DialogueProps {
   text: string;
   traded: boolean;
-};
+}
 
 class DialogueBox extends React.Component<DialogueProps> {
   render() {

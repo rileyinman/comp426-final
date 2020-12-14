@@ -14,10 +14,10 @@ import * as User from '../services/User';
 
 interface ProfileProps {}
 interface ProfileState {
-  password?: string,
-  player: Player,
-  scores: number[],
-  redirect: boolean
+  password?: string;
+  player: Player;
+  scores: number[];
+  redirect: boolean;
 }
 
 class Profile extends React.Component<ProfileProps, ProfileState> {
