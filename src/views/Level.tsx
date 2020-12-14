@@ -22,7 +22,6 @@ interface LevelParams {
 }
 
 interface LevelState {
-  id: number,
   player: Player,
   cells: (Floor|Item|Obstacle|Player)[][],
   inventoryItems: Item[],
@@ -46,7 +45,6 @@ class Level extends React.Component<LevelProps<LevelParams>, LevelState> {
 
   getInitialState = () => {
     return {
-      id: this.props.match.params.id,
       player: Player.PLAYER1,
       cells: [],
       inventoryItems: [],
@@ -69,7 +67,7 @@ class Level extends React.Component<LevelProps<LevelParams>, LevelState> {
     const userPlayer: Player = User.localData().player;
     this.setState({ player: userPlayer });
 
-    fetch(`${process.env.REACT_APP_API_URL}/level/${this.state.id}`)
+    fetch(`${process.env.REACT_APP_API_URL}/level/${this.props.match.params.id}`)
       .then(response => response.text().then(text => {
         const data = JSON.parse(text);
 
@@ -241,7 +239,7 @@ class Level extends React.Component<LevelProps<LevelParams>, LevelState> {
         result = true;
       }
     }
-    
+
     if (result && arraySubset(this.state.inventoryItems, this.state.take)) {
       arrayRemove(this.state.inventoryItems, this.state.take);
       arrayAdd(this.state.inventoryItems, this.state.give);
@@ -316,7 +314,7 @@ class Level extends React.Component<LevelProps<LevelParams>, LevelState> {
 
       User.getUser(username).then(() => User.update(username, {
         score: this.state.time,
-        level: this.state.id
+        level: this.props.match.params.id
       }));
     }
 
@@ -373,7 +371,7 @@ class Level extends React.Component<LevelProps<LevelParams>, LevelState> {
         <Tile kind='parent' vertical>
           <Tile>
             <Section>
-              <Heading>Level {this.state.id}</Heading>
+              <Heading>Level {this.props.match.params.id}</Heading>
             </Section>
             <Section>
               <Link to='/game'><Button>Back</Button></Link>
@@ -392,14 +390,19 @@ class Level extends React.Component<LevelProps<LevelParams>, LevelState> {
           <Tile>
             {dialogue}
           </Tile>
-          <Modal show={this.state.won} onClose={() => this.setState({ won: false })} center>
-            <div>
-              <h2>You did it!</h2>
-            </div>
-            <Link to='/game'>
-              <Button>Continue to next level</Button>
-            </Link> 
-          </Modal> 
+
+          <Modal show={this.state.won} onClose={() => null} closeOnEsc={false}>
+            <Modal.Card>
+              <Modal.Card.Head showClose={false}>
+                <Modal.Card.Title>You did it!</Modal.Card.Title>
+              </Modal.Card.Head>
+              <Modal.Card.Body>
+                <Link to='/game'>
+                  <Button>Back to level list</Button>
+                </Link>
+              </Modal.Card.Body>
+            </Modal.Card>
+          </Modal>
         </Tile>
       </Tile>
     );
