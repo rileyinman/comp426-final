@@ -393,8 +393,8 @@ class Level extends React.Component<LevelProps<LevelParams>, LevelState> {
           </Tile>
           <Modal show={this.state.won} onClose={() => this.setState({ won: false })} center>
             <div>
-              <h2>You did it!</h2>
-            </div>
+              <h2>You completed level { this.state.id } in { this.state.time } seconds!</h2>
+            </div> 
             <Link to='/game'>
               <Button>Continue to next level</Button>
             </Link> 
