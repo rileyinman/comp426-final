@@ -14,16 +14,14 @@ import { arrayAdd, arrayRemove, arraySubset, enumContains, indexOf2d } from '../
 import * as User from '../services/User';
 
 import './Level.scss';
-import { timeStamp } from 'console';
 
 interface LevelProps<T> extends RouteComponentProps<T> {}
 
 interface LevelParams {
-  id: number
+  id: number;
 }
 
 interface LevelState {
-  id: number,
   player: Player,
   cells: (Floor|Item|Obstacle|Player)[][],
   inventoryItems: Item[],
@@ -35,7 +33,6 @@ interface LevelState {
   timerStarted: boolean,
   time: number,
   won: boolean
-
 }
 
 class Level extends React.Component<LevelProps<LevelParams>, LevelState> {
@@ -48,7 +45,6 @@ class Level extends React.Component<LevelProps<LevelParams>, LevelState> {
 
   getInitialState = () => {
     return {
-      id: this.props.match.params.id,
       player: Player.PLAYER1,
       cells: [],
       inventoryItems: [],
@@ -68,10 +64,10 @@ class Level extends React.Component<LevelProps<LevelParams>, LevelState> {
     this.resetTimer();
     this.setState(this.getInitialState());
 
-    const userPlayer: Player = User.localData().player;
-    this.setState({ player: userPlayer });
+    const player: Player = User.localData().player;
+    this.setState({ player });
 
-    fetch(`${process.env.REACT_APP_API_URL}/level/${this.state.id}`)
+    fetch(`${process.env.REACT_APP_API_URL}/level/${this.props.match.params.id}`)
       .then(response => response.text().then(text => {
         const data = JSON.parse(text);
 
@@ -243,7 +239,7 @@ class Level extends React.Component<LevelProps<LevelParams>, LevelState> {
         result = true;
       }
     }
-    
+
     if (result && arraySubset(this.state.inventoryItems, this.state.take)) {
       arrayRemove(this.state.inventoryItems, this.state.take);
       arrayAdd(this.state.inventoryItems, this.state.give);
@@ -297,20 +293,20 @@ class Level extends React.Component<LevelProps<LevelParams>, LevelState> {
   }
 
   manipulateBoard = (direction: string) => {
-    let newCells = this.state.cells.map(innerArray => innerArray.slice());
-    let playerLocation = indexOf2d(newCells, this.state.player);
+    let cells = this.state.cells.map(innerArray => innerArray.slice());
+    let playerLocation = indexOf2d(cells, this.state.player);
 
-    if (!newCells || !playerLocation) {
+    if (!cells || !playerLocation) {
       return;
     }
 
     let [playerRow, playerColumn] = playerLocation;
 
-    if (!this.canMove(newCells, playerRow, playerColumn, direction)) {
+    if (!this.canMove(cells, playerRow, playerColumn, direction)) {
       return;
     }
 
-    if (this.checkWin(newCells, playerRow, playerColumn, direction)) {
+    if (this.checkWin(cells, playerRow, playerColumn, direction)) {
       this.stopTimer();
       this.setState({ won: true });
 
@@ -318,40 +314,40 @@ class Level extends React.Component<LevelProps<LevelParams>, LevelState> {
 
       User.getUser(username).then(() => User.update(username, {
         score: this.state.time,
-        level: this.state.id
+        level: this.props.match.params.id
       }));
     }
 
-    newCells[playerRow][playerColumn] = Floor.DEFAULT;
+    cells[playerRow][playerColumn] = Floor.DEFAULT;
 
     switch (direction) {
       case 'left':
-        if(enumContains(Item, newCells[playerRow][playerColumn-1])) {
-          this.state.inventoryItems.push(newCells[playerRow][playerColumn-1] as Item);
+        if(enumContains(Item, cells[playerRow][playerColumn-1])) {
+          this.state.inventoryItems.push(cells[playerRow][playerColumn-1] as Item);
         }
-        newCells[playerRow][playerColumn-1] = this.state.player;
+        cells[playerRow][playerColumn-1] = this.state.player;
         break;
       case 'right':
-        if(enumContains(Item, newCells[playerRow][playerColumn+1])) {
-          this.state.inventoryItems.push(newCells[playerRow][playerColumn+1] as Item);
+        if(enumContains(Item, cells[playerRow][playerColumn+1])) {
+          this.state.inventoryItems.push(cells[playerRow][playerColumn+1] as Item);
         }
-        newCells[playerRow][playerColumn+1] = this.state.player;
+        cells[playerRow][playerColumn+1] = this.state.player;
         break;
       case 'up':
-        if(enumContains(Item, newCells[playerRow-1][playerColumn])) {
-          this.state.inventoryItems.push(newCells[playerRow-1][playerColumn] as Item);
+        if(enumContains(Item, cells[playerRow-1][playerColumn])) {
+          this.state.inventoryItems.push(cells[playerRow-1][playerColumn] as Item);
         }
-        newCells[playerRow-1][playerColumn] = this.state.player;
+        cells[playerRow-1][playerColumn] = this.state.player;
         break;
       case 'down':
-        if(enumContains(Item, newCells[playerRow+1][playerColumn])) {
-          this.state.inventoryItems.push(newCells[playerRow+1][playerColumn] as Item);
+        if(enumContains(Item, cells[playerRow+1][playerColumn])) {
+          this.state.inventoryItems.push(cells[playerRow+1][playerColumn] as Item);
         }
-        newCells[playerRow+1][playerColumn] = this.state.player;
+        cells[playerRow+1][playerColumn] = this.state.player;
         break;
     }
 
-    this.setState({ cells: newCells });
+    this.setState({ cells });
 
     playerLocation = indexOf2d(this.state.cells, this.state.player);
     if (!playerLocation) { return; }
@@ -375,7 +371,7 @@ class Level extends React.Component<LevelProps<LevelParams>, LevelState> {
         <Tile kind='parent' vertical>
           <Tile>
             <Section>
-              <Heading>Level {this.state.id}</Heading>
+              <Heading>Level {this.props.match.params.id}</Heading>
             </Section>
             <Section>
               <Link to='/game'><Button>Back</Button></Link>
@@ -386,11 +382,15 @@ class Level extends React.Component<LevelProps<LevelParams>, LevelState> {
             </Section>
           </Tile>
           <Tile>
-            <Inventory items={this.state.inventoryItems}/>
+            <Section>
+              <Heading size={4} className='has-text-centered'>Inventory</Heading>
+              <Inventory items={this.state.inventoryItems}/>
+            </Section>
           </Tile>
           <Tile>
             {dialogue}
           </Tile>
+<<<<<<< HEAD
           <Modal show={this.state.won} onClose={() => this.setState({ won: false })} center>
             <div>
               <h2>You completed level { this.state.id } in { this.state.time } seconds!</h2>
@@ -399,6 +399,21 @@ class Level extends React.Component<LevelProps<LevelParams>, LevelState> {
               <Button>Continue to next level</Button>
             </Link> 
           </Modal> 
+=======
+
+          <Modal show={this.state.won} onClose={() => null} closeOnEsc={false}>
+            <Modal.Card>
+              <Modal.Card.Head showClose={false}>
+                <Modal.Card.Title>You did it!</Modal.Card.Title>
+              </Modal.Card.Head>
+              <Modal.Card.Body>
+                <Link to='/game'>
+                  <Button>Back to level list</Button>
+                </Link>
+              </Modal.Card.Body>
+            </Modal.Card>
+          </Modal>
+>>>>>>> 13b7a81d85eb5de444e66918e076e3819a8329a1
         </Tile>
       </Tile>
     );

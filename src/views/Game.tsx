@@ -7,8 +7,8 @@ import * as User from '../services/User';
 
 interface GameProps {}
 interface GameState {
-  levels: number[]
-  unlocked: number
+  levels: number[];
+  unlocked: number;
 }
 
 class Game extends React.Component<GameProps, GameState> {
@@ -25,12 +25,14 @@ class Game extends React.Component<GameProps, GameState> {
       .then(response => response.text().then(
         text => this.setState({ levels: JSON.parse(text) })
       ));
-    User.getUser(User.localData().username).then(user => this.setState({unlocked: user.scores.length}))
+
+    User.getUser(User.localData().username)
+      .then(user => this.setState({ unlocked: user.scores.length }));
   }
 
   render() {
     return this.state.levels.map((level, index) => (
-      <Link to={{ pathname: `/level/${index}` }}>
+      <Link key={index} to={{ pathname: `/level/${index}` }}>
         <Button disabled={index > this.state.unlocked}>Level {index}</Button>
       </Link>
     ))

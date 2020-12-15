@@ -62,12 +62,27 @@ function register(username: string, password: string, player: Player) {
   }).then(parseResponse);
 }
 
-function update(username: string, data: { password?: string, level?: number, score?: number, player?: Player}) {
-  return fetch(`${process.env.REACT_APP_API_URL}/user/${username}`, {
+async function update(
+  username: string,
+  data: {
+    password?: string,
+    level?: number,
+    score?: number,
+    player?: Player
+  }) {
+  const result = await fetch(`${process.env.REACT_APP_API_URL}/user/${username}`, {
     method: 'PUT',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(data)
   }).then(parseResponse);
+
+  if (result) {
+    let userData = localData();
+    if (data.player) { userData.player = data.player; }
+    localStorage.setItem('user', JSON.stringify(userData));
+  }
+
+  return result;
 }
 
 export { getAll, getUser, isAuthenticated, localData, login, logout, register, update };
