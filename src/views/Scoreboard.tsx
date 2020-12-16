@@ -1,17 +1,18 @@
 import React from 'react';
 
-import Section from 'react-bulma-components/lib/components/section';
-import Table from 'react-bulma-components/lib/components/table';
 import Columns from 'react-bulma-components/lib/components/columns';
 import Heading from 'react-bulma-components/lib/components/heading';
+import Section from 'react-bulma-components/lib/components/section';
+import Table from 'react-bulma-components/lib/components/table';
 
-import { parseResponse } from '../helpers';
 import * as User from '../services/User';
-import { SSL_OP_SSLEAY_080_CLIENT_DH_BUG } from 'constants';
 
-interface ScoreboardProps { string: number }
+interface ScoreboardProps {
+    string: number;
+}
+
 interface ScoreboardState {
-    topScores0: number[]; 
+    topScores0: number[];
     topScores1: number[];
     topScores2: number[];
     topScores3: number[];
@@ -25,7 +26,6 @@ interface ScoreboardState {
 }
 
 class Scoreboard extends React.Component<ScoreboardProps, ScoreboardState> {
-    
     constructor(props: ScoreboardProps) {
         super(props);
         this.state = {
@@ -39,59 +39,45 @@ class Scoreboard extends React.Component<ScoreboardProps, ScoreboardState> {
             topUsers1: ['', '', ''],
             topUsers2: ['', '', ''],
             topUsers3: ['', '', ''],
-            topUsers4: ['', '', ''],          
+            topUsers4: ['', '', '']
         };
     }
 
-    // componentDidMount() {
-    //     fetch(`${process.env.REACT_APP_API_URL}/scoreBoard`)
-    //     .then(response => response.text().then(text => {
-    //       const data = JSON.parse(text);
-  
-    //       const scores = data.topScores;
-    //       const users = data.users;
-  
-    //       this.setState({
-    //         topScores: scores,
-    //         topUsers: users
-    //       });
-    //     }));
-    // }
+    componentDidMount() {
+        User.getAll().then(usernames => {
+            for (const username of usernames) {
+                User.getUser(username).then(user => {
+                    if(user.scores.length !== 0 && user.scores[0] !== undefined) {
+                        let newScores = [...this.state.topScores0];
+                        newScores.push(user.scores[0]);
+                        newScores.sort(function(a, b) {
+                            return a-b;
+                        });
 
-    update = () => {
-        User.getAll().then(username => {
-            User.getUser(username).then(user => {
-                if(user.scores.length !== 0 && user.scores[0] !== undefined) {
-                    let newScores = [...this.state.topScores0];
-                    newScores.push(user.scores[0]);
-                    newScores.sort(function(a, b) {
-                        return a-b;
-                    });
-
-                    const newUsers = [...this.state.topUsers0];
-                    if(user.scores[0] < newScores[3]) {
-                        for(let i = 2; i >= 0; i--) {
-                            if(user.scores[0] == newScores[i]) {
-                                newUsers.splice(i, 0, user.username);
-                                newUsers.pop();
-                                break;
+                        const newUsers = [...this.state.topUsers0];
+                        if(user.scores[0] < newScores[3]) {
+                            for(let i = 2; i >= 0; i--) {
+                                if(user.scores[0] == newScores[i]) {
+                                    newUsers.splice(i, 0, user.username);
+                                    newUsers.pop();
+                                    break;
+                                }
                             }
                         }
-                    }
-                    newScores.pop();
+                        newScores.pop();
 
-                    this.setState({
-                        topScores0: newScores,
-                        topUsers0: newUsers
-                    });                
-                }
-            });
+                        this.setState({
+                            topScores0: newScores,
+                            topUsers0: newUsers
+                        });
+                    }
+                });
+            }
         });
 
     }
 
     render() {
-        this.update();
         return (
             <Section>
                 <Columns className='is-cnetered'>
@@ -118,7 +104,6 @@ class Scoreboard extends React.Component<ScoreboardProps, ScoreboardState> {
             </Section>
         )
     }
-
 }
 
 export default Scoreboard;
