@@ -10,8 +10,7 @@ import Modal from 'react-bulma-components/lib/components/modal';
 
 import { Board, Inventory, DialogueBox } from '../components';
 import { Floor, Item, Obstacle, Player } from '../constants';
-import { Scoreboard } from '../views';
-import { arrayAdd, arrayRemove, arraySubset, enumContains, indexOf2d } from '../helpers';
+import { arrayAdd, arrayRemove, arraySubset, enumContains, formatTime, indexOf2d } from '../helpers';
 import * as User from '../services/User';
 
 import './Level.scss';
@@ -379,7 +378,7 @@ class Level extends React.Component<LevelProps<LevelParams>, LevelState> {
               <Button onClick={this.restart}>Restart Level</Button>
             </Section>
             <Section>
-              <Heading>Time: {this.state.time}</Heading>
+              <Heading>Time: {formatTime(this.state.time)}</Heading>
             </Section>
           </Tile>
           <Tile>
@@ -395,7 +394,7 @@ class Level extends React.Component<LevelProps<LevelParams>, LevelState> {
           <Modal show={this.state.won} onClose={() => null} closeOnEsc={false}>
             <Modal.Card>
               <Modal.Card.Head showClose={false}>
-                <Modal.Card.Title>You did it!</Modal.Card.Title>
+                <Modal.Card.Title>You completed level {this.props.match.params.id} in {formatTime(this.state.time)}!</Modal.Card.Title>
               </Modal.Card.Head>
               <Modal.Card.Body>
                 <Link to='/game'>
