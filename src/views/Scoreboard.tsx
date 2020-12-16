@@ -1,0 +1,124 @@
+import React from 'react';
+
+import Section from 'react-bulma-components/lib/components/section';
+import Table from 'react-bulma-components/lib/components/table';
+import Columns from 'react-bulma-components/lib/components/columns';
+import Heading from 'react-bulma-components/lib/components/heading';
+
+import { parseResponse } from '../helpers';
+import * as User from '../services/User';
+import { SSL_OP_SSLEAY_080_CLIENT_DH_BUG } from 'constants';
+
+interface ScoreboardProps { string: number }
+interface ScoreboardState {
+    topScores0: number[]; 
+    topScores1: number[];
+    topScores2: number[];
+    topScores3: number[];
+    topScores4: number[];
+
+    topUsers0: string[];
+    topUsers1: string[];
+    topUsers2: string[];
+    topUsers3: string[];
+    topUsers4: string[];
+}
+
+class Scoreboard extends React.Component<ScoreboardProps, ScoreboardState> {
+    
+    constructor(props: ScoreboardProps) {
+        super(props);
+        this.state = {
+            topScores0: [1000, 1000, 1000],
+            topScores1: [1000, 1000, 1000],
+            topScores2: [1000, 1000, 1000],
+            topScores3: [1000, 1000, 1000],
+            topScores4: [1000, 1000, 1000],
+
+            topUsers0: ['', '', ''],
+            topUsers1: ['', '', ''],
+            topUsers2: ['', '', ''],
+            topUsers3: ['', '', ''],
+            topUsers4: ['', '', ''],          
+        };
+    }
+
+    // componentDidMount() {
+    //     fetch(`${process.env.REACT_APP_API_URL}/scoreBoard`)
+    //     .then(response => response.text().then(text => {
+    //       const data = JSON.parse(text);
+  
+    //       const scores = data.topScores;
+    //       const users = data.users;
+  
+    //       this.setState({
+    //         topScores: scores,
+    //         topUsers: users
+    //       });
+    //     }));
+    // }
+
+    update = () => {
+        User.getAll().then(username => {
+            User.getUser(username).then(user => {
+                if(user.scores.length !== 0 && user.scores[0] !== undefined) {
+                    let newScores = [...this.state.topScores0];
+                    newScores.push(user.scores[0]);
+                    newScores.sort(function(a, b) {
+                        return a-b;
+                    });
+
+                    const newUsers = [...this.state.topUsers0];
+                    if(user.scores[0] < newScores[3]) {
+                        for(let i = 2; i >= 0; i--) {
+                            if(user.scores[0] == newScores[i]) {
+                                newUsers.splice(i, 0, user.username);
+                                newUsers.pop();
+                                break;
+                            }
+                        }
+                    }
+                    newScores.pop();
+
+                    this.setState({
+                        topScores0: newScores,
+                        topUsers0: newUsers
+                    });                
+                }
+            });
+        });
+
+    }
+
+    render() {
+        this.update();
+        return (
+            <Section>
+                <Columns className='is-cnetered'>
+                    <Columns.Column>
+                        <Heading className='has-text-centered'>Level 0</Heading>
+                        <Table>
+                            <thead>
+                                <tr>
+                                    <th>User</th>
+                                    <th>Score</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {this.state.topUsers0.map((user, index) => (
+                                    <tr key={index}>
+                                        <th>{user}</th>
+                                        <td>{this.state.topScores0[index]}</td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </Table>
+                    </Columns.Column>
+                </Columns>
+            </Section>
+        )
+    }
+
+}
+
+export default Scoreboard;

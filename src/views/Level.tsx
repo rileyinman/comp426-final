@@ -10,6 +10,7 @@ import Modal from 'react-bulma-components/lib/components/modal';
 
 import { Board, Inventory, DialogueBox } from '../components';
 import { Floor, Item, Obstacle, Player } from '../constants';
+import { Scoreboard } from '../views';
 import { arrayAdd, arrayRemove, arraySubset, enumContains, indexOf2d } from '../helpers';
 import * as User from '../services/User';
 
@@ -390,16 +391,6 @@ class Level extends React.Component<LevelProps<LevelParams>, LevelState> {
           <Tile>
             {dialogue}
           </Tile>
-<<<<<<< HEAD
-          <Modal show={this.state.won} onClose={() => this.setState({ won: false })} center>
-            <div>
-              <h2>You completed level { this.state.id } in { this.state.time } seconds!</h2>
-            </div> 
-            <Link to='/game'>
-              <Button>Continue to next level</Button>
-            </Link> 
-          </Modal> 
-=======
 
           <Modal show={this.state.won} onClose={() => null} closeOnEsc={false}>
             <Modal.Card>
@@ -413,7 +404,6 @@ class Level extends React.Component<LevelProps<LevelParams>, LevelState> {
               </Modal.Card.Body>
             </Modal.Card>
           </Modal>
->>>>>>> 13b7a81d85eb5de444e66918e076e3819a8329a1
         </Tile>
       </Tile>
     );

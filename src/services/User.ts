@@ -2,7 +2,13 @@ import { Player } from '../constants';
 import { parseResponse } from '../helpers';
 
 function getAll() {
-  return fetch(`${process.env.REACT_APP_API_URL}/user`);
+  return fetch(`${process.env.REACT_APP_API_URL}/user`).then(response => response.text().then(text => {
+    if(response.ok) {
+      return JSON.parse(text);
+    }
+    
+    return Promise.reject(response.statusText);
+  }));
 }
 
 function getUser(username: string) {

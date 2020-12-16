@@ -2,7 +2,7 @@ import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 
 import { ProtectedRoute } from './auth';
-import { Game, Home, Login, Level, Profile, Register } from './views';
+import { Game, Home, Login, Level, Profile, Register, Scoreboard } from './views';
 import { NavBar } from './components';
 
 import './App.scss';
@@ -15,7 +15,7 @@ const App = () => {
         <Route path='/' exact component={Home}/>
         <Route path='/login' component={Login}/>
         <Route path='/register' component={Register}/>
-        {/* <Route path='/scores' component={Scores}/> */}
+        <Route path='/scores' component={Scoreboard}/>
         <ProtectedRoute path='/level/:id' component={Level}/>
         <ProtectedRoute path='/game' component={Game}/>
         <ProtectedRoute path='/profile' component={Profile}/>
