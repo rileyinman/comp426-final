@@ -31,7 +31,7 @@ class Scoreboard extends React.Component<ScoreboardProps, ScoreboardState> {
         text => this.setState({ levels: JSON.parse(text) })
       ));
 
-    this.state.levels.map(level => {
+    this.state.levels.forEach(level => {
       let scores = [...this.state.scores, [Infinity, Infinity, Infinity]];
       let users = [...this.state.users, ['', '', '']];
       this.setState({ scores, users })
@@ -46,7 +46,7 @@ class Scoreboard extends React.Component<ScoreboardProps, ScoreboardState> {
         continue;
       }
 
-      this.state.levels.map(level => {
+      this.state.levels.forEach(level => {
         let scores = [...this.state.scores];
         let users = [...this.state.users];
 
@@ -81,7 +81,7 @@ class Scoreboard extends React.Component<ScoreboardProps, ScoreboardState> {
     }
 
     return (
-      <Section>
+      <Section key={level}>
         <Heading className='has-text-centered'>Level {level}</Heading>
         <Table>
           <thead>
