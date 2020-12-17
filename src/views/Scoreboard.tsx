@@ -5,6 +5,7 @@ import Heading from 'react-bulma-components/lib/components/heading';
 import Section from 'react-bulma-components/lib/components/section';
 import Table from 'react-bulma-components/lib/components/table';
 
+import { formatTime } from '../helpers';
 import * as User from '../services/User';
 
 interface ScoreboardProps {}
@@ -81,7 +82,7 @@ class Scoreboard extends React.Component<ScoreboardProps, ScoreboardState> {
         return (
           <tr key={index}>
             <th>{user || '-'}</th>
-            <td>{score === Infinity ? '-' : score}</td>
+            <td>{score === Infinity ? '-' : formatTime(score)}</td>
           </tr>
         )}
       );
