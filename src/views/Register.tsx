@@ -96,51 +96,51 @@ class Register extends React.Component<RegisterProps, RegisterState> {
     }
 
     return (
-    <Columns className='is-centered register'>
-      <Columns.Column size='two-fifths'>
-        <Card>
-          <Card.Header className='register-header'>
-            <Card.Header.Title className='is-centered'>
-              <Heading size={4} className='register-header-text'>Register</Heading>
-            </Card.Header.Title>
-          </Card.Header>
+      <Columns className='is-centered register'>
+        <Columns.Column size='two-fifths'>
+          <Card>
+            <Card.Header className='register-header'>
+              <Card.Header.Title className='is-centered'>
+                <Heading size={4} className='register-header-text'>Register</Heading>
+              </Card.Header.Title>
+            </Card.Header>
 
-          <Card.Content>
-            <form className='register-form' onSubmit={this.submitHandler}>
-              <Field>
-                <Label>Username</Label>
-                <Control>
-                  <Input type='text' name='username' title='username' placeholder='username' color={usernameColor} value={this.state.username} onChange={this.usernameHandler} required/>
-                </Control>
-                {usernameHelp}
-              </Field>
+            <Card.Content>
+              <form className='register-form' onSubmit={this.submitHandler}>
+                <Field>
+                  <Label>Username</Label>
+                  <Control>
+                    <Input type='text' name='username' title='username' placeholder='username' color={usernameColor} value={this.state.username} onChange={this.usernameHandler} required/>
+                  </Control>
+                  {usernameHelp}
+                </Field>
 
-              <Field>
-                <Label>Password</Label>
-                <Control>
-                  <Input type='password' name='password' title='password' placeholder='password' value={this.state.password} onChange={this.passwordHandler} required/>
-                </Control>
-              </Field>
+                <Field>
+                  <Label>Password</Label>
+                  <Control>
+                    <Input type='password' name='password' title='password' placeholder='password' value={this.state.password} onChange={this.passwordHandler} required/>
+                  </Control>
+                </Field>
 
-              <Field kind='group'>
-                <Control>
-                  <Label>Player sprite</Label>
-                  <PlayerSelector parentForm={this}/>
-                </Control>
-              </Field>
+                <Field kind='group'>
+                  <Control>
+                    <Label>Player sprite</Label>
+                    <PlayerSelector parentForm={this}/>
+                  </Control>
+                </Field>
 
-              <Field>
-                <Control>
-                  <Button type='submit' color='primary'>Register</Button>
-                </Control>
-              </Field>
+                <Field>
+                  <Control>
+                    <Button type='submit' color='primary'>Register</Button>
+                  </Control>
+                </Field>
 
-              {formStatus}
-            </form>
-          </Card.Content>
-        </Card>
-      </Columns.Column>
-    </Columns>
+                {formStatus}
+              </form>
+            </Card.Content>
+          </Card>
+        </Columns.Column>
+      </Columns>
     );
   }
 }

@@ -103,43 +103,43 @@ class Login extends React.Component<LoginProps, LoginState> {
     }
 
     return (
-    <Columns className='is-centered login'>
-      <Columns.Column size='two-fifths'>
-        <Card>
-          <Card.Header className='login-header'>
-            <Card.Header.Title className='is-centered'>
-              <Heading size={4} className='login-header-text'>Login</Heading>
-            </Card.Header.Title>
-          </Card.Header>
+      <Columns className='is-centered login'>
+        <Columns.Column size='two-fifths'>
+          <Card>
+            <Card.Header className='login-header'>
+              <Card.Header.Title className='is-centered'>
+                <Heading size={4} className='login-header-text'>Login</Heading>
+              </Card.Header.Title>
+            </Card.Header>
 
-          <Card.Content>
-            <form className='login-form' onSubmit={this.submitHandler}>
-              <Field>
-                <Label>Username</Label>
-                <Control>
-                  <Input type='text' name='username' title='username' placeholder='username' color={usernameColor} value={this.state.username} onChange={this.usernameHandler} required/>
-                </Control>
-                {usernameHelp}
-              </Field>
+            <Card.Content>
+              <form className='login-form' onSubmit={this.submitHandler}>
+                <Field>
+                  <Label>Username</Label>
+                  <Control>
+                    <Input type='text' name='username' title='username' placeholder='username' color={usernameColor} value={this.state.username} onChange={this.usernameHandler} required/>
+                  </Control>
+                  {usernameHelp}
+                </Field>
 
-              <Field>
-                <Label>Password</Label>
-                <Control>
-                  <Input type='password' name='password' title='password' placeholder='password' value={this.state.password} onChange={this.passwordHandler} required/>
-                </Control>
-              </Field>
+                <Field>
+                  <Label>Password</Label>
+                  <Control>
+                    <Input type='password' name='password' title='password' placeholder='password' value={this.state.password} onChange={this.passwordHandler} required/>
+                  </Control>
+                </Field>
 
-              <Field>
-                <Control>
-                  <Button type='submit' color='primary'>Login</Button>
-                </Control>
-              </Field>
-              {formStatus}
-            </form>
-          </Card.Content>
-        </Card>
-      </Columns.Column>
-    </Columns>
+                <Field>
+                  <Control>
+                    <Button type='submit' color='primary'>Login</Button>
+                  </Control>
+                </Field>
+                {formStatus}
+              </form>
+            </Card.Content>
+          </Card>
+        </Columns.Column>
+      </Columns>
     );
   }
 }
