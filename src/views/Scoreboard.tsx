@@ -50,22 +50,14 @@ class Scoreboard extends React.Component<ScoreboardProps, ScoreboardState> {
         let scores = [...this.state.scores];
         let users = [...this.state.users];
 
-        // TODO: See if this can be simplified further?
-        if (user.scores[level] <= scores[level][0]) {
-          scores[level].splice(0, 0, user.scores[level]);
-          users[level].splice(0, 0, username);
-          scores[level].splice(-1,1);
-          users[level].splice(-1,1);
-        } else if (user.scores[level] <= scores[level][1]) {
-          scores[level].splice(1, 0, user.scores[level]);
-          users[level].splice(1, 0, username);
-          scores[level].splice(-1,1);
-          users[level].splice(-1,1);
-        } else if (user.scores[level] <= scores[level][2]) {
-          scores[level].splice(2, 0, user.scores[level]);
-          users[level].splice(2, 0, username);
-          scores[level].splice(-1,1);
-          users[level].splice(-1,1);
+        for (const [index, score] of scores[level].entries()) {
+          if (user.scores[level] <= score) {
+            scores[level].splice(index, 0, user.scores[level]);
+            users[level].splice(index, 0, username);
+            scores[level].splice(-1,1);
+            users[level].splice(-1,1);
+            break;
+          }
         }
 
         this.setState({ scores });
