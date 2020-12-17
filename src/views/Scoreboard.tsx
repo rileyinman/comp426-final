@@ -9,6 +9,7 @@ import * as User from '../services/User';
 
 interface ScoreboardProps {}
 interface ScoreboardState {
+  levels: number[];
   scores: number[][];
   users: string[];
 }
@@ -17,6 +18,7 @@ class Scoreboard extends React.Component<ScoreboardProps, ScoreboardState> {
   constructor(props: ScoreboardProps) {
     super(props);
     this.state = {
+      levels: [],
       scores: [],
       users: []
     };
