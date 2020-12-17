@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Label } from 'react-bulma-components/lib/components/form';
 
-import { images } from '../assets';
+import * as images from '../assets';
 import { Player } from '../constants';
 
 import './PlayerSelector.scss';

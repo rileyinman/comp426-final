@@ -7,8 +7,7 @@ import * as User from '../services/User';
 
 import LogoutButton from './LogoutButton';
 
-// TODO: Replace logo
-import logo from '../logo.svg';
+import { logo } from '../assets';
 import './NavBar.scss';
 
 interface NavBarProps {}
@@ -80,8 +79,10 @@ class NavBar extends React.Component<NavBarProps, NavBarState> {
     return (
       <Navbar color='dark' fixed='top' active={this.state.active}>
         <Navbar.Brand>
-          <Navbar.Item renderAs='div'>
-            <img src={logo} alt='Placeholder logo' style={{ width: 40 }}/>
+          <Navbar.Item renderAs='div' className='navbar-logo-container'>
+            <Link to='/'>
+              <img src={logo} alt='Placeholder logo' className='navbar-logo'/>
+            </Link>
           </Navbar.Item>
           <Navbar.Burger onClick={this.toggleActive}/>
         </Navbar.Brand>

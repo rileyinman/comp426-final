@@ -3,7 +3,7 @@ import React from 'react';
 import { Floor, Item, Obstacle, Player } from '../constants';
 
 import './Cell.scss';
-import { images } from '../assets';
+import * as images from '../assets';
 
 interface CellProps {
   contains: Floor | Item | Obstacle | Player;

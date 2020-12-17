@@ -11,6 +11,7 @@ import key_yellow from './Key_Yellow.png';
 import key_green from './Key_Green.png';
 import key_blue from './Key_Blue.png';
 import key_purple from './Key_Purple.png';
+import logo from './Logo.png';
 import player1 from './Player1.png';
 import player2 from './Player2.png';
 import player3 from './Player3.png';
@@ -18,15 +19,14 @@ import player4 from './Player4.png';
 import npc from './NPC.png';
 import wall from './Wall.png';
 
-const images = {
+export {
   door_pink, door_yellow, door_green, door_blue, door_purple,
   empty,
   exit,
   floor,
   key_pink, key_yellow, key_green, key_blue, key_purple,
+  logo,
   player1, player2, player3, player4,
   wall,
   npc,
-}
-
-export { images }
+};
