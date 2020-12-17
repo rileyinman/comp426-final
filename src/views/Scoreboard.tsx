@@ -11,7 +11,7 @@ interface ScoreboardProps {}
 interface ScoreboardState {
   levels: number[];
   scores: number[][];
-  users: string[];
+  users: string[][];
 }
 
 class Scoreboard extends React.Component<ScoreboardProps, ScoreboardState> {
@@ -32,7 +32,7 @@ class Scoreboard extends React.Component<ScoreboardProps, ScoreboardState> {
 
     this.state.levels.map(level => {
       let scores = [...this.state.scores, [Infinity, Infinity, Infinity]];
-      let users = [...this.state.users, [null, null, null]];
+      let users = [...this.state.users, ['', '', '']];
       this.setState({ scores, users })
     });
 
@@ -80,7 +80,7 @@ class Scoreboard extends React.Component<ScoreboardProps, ScoreboardState> {
 
         return (
           <tr key={index}>
-            <th>{user ?? '-'}</th>
+            <th>{user || '-'}</th>
             <td>{score === Infinity ? '-' : score}</td>
           </tr>
         )}
