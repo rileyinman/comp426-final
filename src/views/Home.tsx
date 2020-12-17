@@ -23,7 +23,7 @@ class Home extends React.Component<HomeProps> {
       <Hero color='primary' className='is-fullheight-with-navbar'>
         <Hero.Body>
           <Container>
-            <Heading size={1}>COMP 426 Final Project</Heading>
+            <Heading size={1}>Infinikey</Heading>
             <Link to='/game'><Button>Play Game</Button></Link>
           </Container>
         </Hero.Body>
